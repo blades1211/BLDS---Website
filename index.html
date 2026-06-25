@@ -349,12 +349,9 @@ CHAPTER 3
 </div>
 
 <div class="chapter">
-<button class="chapter-btn">
+<button class="chapter-btn" onclick="openChapter4()">
 CHAPTER 4
 </button>
-<div class="coming">
-COMING SOON
-</div>
 </div>
 
 <div class="chapter">
@@ -438,6 +435,24 @@ document.querySelector(".loading").innerText =
 setTimeout(()=>{
 
 window.location.href="chapter3.html";
+
+},1800);
+
+}
+
+function openChapter4(){
+
+const transition =
+document.getElementById("transition");
+
+transition.classList.add("active");
+
+document.querySelector(".loading").innerText =
+"LOADING CHAPTER IV";
+
+setTimeout(()=>{
+
+window.location.href="chapter4.html";
 
 },1800);
 
