@@ -3,166 +3,316 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BLDS - BlackLightDoms</title>
+
+<title>BLDS - BLACKLIGHTDOMS</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Times New Roman', serif;
+font-family:"Times New Roman",serif;
 }
 
 body{
 background:#000;
-color:white;
+color:#fff;
 overflow-x:hidden;
-min-height:100vh;
+
+text-shadow:
+0 0 3px rgba(255,255,255,.25),
+0 0 6px rgba(255,255,255,.15);
 }
 
 .container{
+width:100%;
+min-height:100vh;
+
 display:flex;
 flex-direction:column;
 align-items:center;
-justify-content:center;
-padding:40px 20px;
+
+padding:30px 20px 50px;
 }
 
+/* ========================= */
+/* LOGO */
+/* ========================= */
+
 .logo{
-width:180px;
-margin-top:30px;
+width:150px;
+margin-top:25px;
+
 animation:float 4s ease-in-out infinite;
+
 filter:
-drop-shadow(0 0 10px #ffffff)
-drop-shadow(0 0 20px #ffffff)
-drop-shadow(0 0 40px #ffffff);
+drop-shadow(0 0 4px rgba(255,255,255,.35))
+drop-shadow(0 0 8px rgba(255,255,255,.25));
 }
 
 @keyframes float{
+
 0%{
 transform:translateY(0px);
 }
+
 50%{
-transform:translateY(-15px);
+transform:translateY(-12px);
 }
+
 100%{
 transform:translateY(0px);
 }
+
 }
 
 .title{
-margin-top:20px;
-font-size:38px;
-letter-spacing:4px;
-font-weight:bold;
+margin-top:18px;
+
+font-size:28px;
+font-weight:600;
+
+letter-spacing:3px;
 text-align:center;
 }
 
+/* ========================= */
+/* CHAPTER */
+/* ========================= */
+
 .chapter-list{
-margin-top:50px;
 width:100%;
-max-width:400px;
+max-width:320px;
+
+margin-top:50px;
 }
 
 .chapter{
-margin-bottom:18px;
+margin-bottom:16px;
 }
 
 .chapter-btn{
+
 width:100%;
-padding:18px;
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.15);
+
+padding:12px;
+
+font-size:15px;
+letter-spacing:2px;
+
 color:white;
-font-size:20px;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.15);
+
 cursor:pointer;
-transition:0.35s;
-backdrop-filter:blur(10px);
+
+transition:.35s;
+
+backdrop-filter:blur(8px);
+
+text-shadow:
+0 0 5px rgba(255,255,255,.2);
+
 }
 
 .chapter-btn:hover{
-transform:translateY(-3px);
-background:white;
-color:black;
-box-shadow:0 0 25px white;
+
+transform:translateY(-2px);
+
+background:
+rgba(255,255,255,.08);
+
+border-color:
+rgba(255,255,255,.4);
+
+box-shadow:
+0 0 8px rgba(255,255,255,.2);
+
 }
 
 .coming{
+
+margin-top:4px;
+
+font-size:10px;
+
+letter-spacing:3px;
+
+opacity:.45;
+
 text-align:center;
-font-size:12px;
-margin-top:5px;
-opacity:.6;
-letter-spacing:2px;
+
 }
 
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+
 .footer{
-margin-top:80px;
+
+margin-top:70px;
+
 text-align:center;
+
 }
 
 .social{
-margin:10px 0;
+
+margin:12px 0;
+
 }
 
 .social a{
+
 color:white;
+
 text-decoration:none;
+
+font-size:13px;
+
+opacity:.8;
+
 transition:.3s;
+
 }
 
 .social a:hover{
-text-shadow:0 0 10px white;
+
+opacity:1;
+
+text-shadow:
+0 0 8px rgba(255,255,255,.5);
+
 }
 
 .copyright{
-margin-top:40px;
-opacity:.7;
+
+margin-top:35px;
+
+font-size:11px;
+
 letter-spacing:2px;
-font-size:13px;
+
+opacity:.45;
+
 }
 
+/* ========================= */
 /* TRANSITION */
+/* ========================= */
 
 #transition{
+
 position:fixed;
+
 top:0;
 left:0;
+
 width:100%;
 height:100%;
+
 background:black;
+
 display:flex;
 justify-content:center;
 align-items:center;
 flex-direction:column;
-z-index:9999;
+
 opacity:0;
 pointer-events:none;
-transition:.8s;
+
+transition:1s;
+
+z-index:9999;
+
 }
 
 #transition.active{
+
 opacity:1;
 pointer-events:all;
+
 }
 
 .loading{
-font-size:28px;
-letter-spacing:4px;
-animation:pulse 1.5s infinite;
+
+font-size:15px;
+
+letter-spacing:5px;
+
+text-shadow:
+0 0 6px rgba(255,255,255,.3);
+
+animation:pulse 2s infinite;
+
 }
 
 @keyframes pulse{
-0%{opacity:.3;}
-50%{opacity:1;}
-100%{opacity:.3;}
+
+0%{
+opacity:.25;
 }
+
+50%{
+opacity:1;
+}
+
+100%{
+opacity:.25;
+}
+
+}
+
+.light-line{
+
+width:180px;
+height:1px;
+
+background:white;
+
+margin-top:15px;
+
+box-shadow:
+0 0 10px white;
+
+animation:lineGlow 2s infinite;
+
+}
+
+@keyframes lineGlow{
+
+0%{
+opacity:.2;
+}
+
+50%{
+opacity:1;
+}
+
+100%{
+opacity:.2;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div id="transition">
-<div class="loading">LOADING CHAPTER I...</div>
+
+<div class="loading">
+LOADING CHAPTER I
+</div>
+
+<div class="light-line"></div>
+
 </div>
 
 <div class="container">
@@ -185,28 +335,36 @@ CHAPTER 1
 <button class="chapter-btn">
 CHAPTER 2
 </button>
-<div class="coming">COMING SOON</div>
+<div class="coming">
+COMING SOON
+</div>
 </div>
 
 <div class="chapter">
 <button class="chapter-btn">
 CHAPTER 3
 </button>
-<div class="coming">COMING SOON</div>
+<div class="coming">
+COMING SOON
+</div>
 </div>
 
 <div class="chapter">
 <button class="chapter-btn">
 CHAPTER 4
 </button>
-<div class="coming">COMING SOON</div>
+<div class="coming">
+COMING SOON
+</div>
 </div>
 
 <div class="chapter">
 <button class="chapter-btn">
 CHAPTER 5
 </button>
-<div class="coming">COMING SOON</div>
+<div class="coming">
+COMING SOON
+</div>
 </div>
 
 </div>
@@ -234,6 +392,7 @@ BLACKLIGHTDOMS©2026
 </div>
 
 <script>
+
 function openChapter1(){
 
 const transition =
@@ -241,11 +400,21 @@ document.getElementById("transition");
 
 transition.classList.add("active");
 
+/*
+GANTI KE chapter1.html
+SETELAH FILE SUDAH ADA
+*/
+
 setTimeout(()=>{
-window.location.href="chapter1.html";
+
+alert("Chapter 1 belum dibuat.");
+
+transition.classList.remove("active");
+
 },1800);
 
 }
+
 </script>
 
 </body>
