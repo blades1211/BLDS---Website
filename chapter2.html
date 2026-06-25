@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLDS - Chapter II</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+background:#000;
+color:#fff;
+font-family:"Times New Roman",serif;
+line-height:1.9;
+text-shadow:0 0 3px rgba(255,255,255,.15);
+animation:fadeIn 1.5s ease;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.progress{
+position:fixed;
+top:0;left:0;
+height:3px;width:0%;
+background:white;
+box-shadow:0 0 8px white;
+z-index:999;
+}
+
+.container{
+max-width:850px;
+margin:auto;
+padding:80px 25px;
+}
+
+.back{
+display:inline-block;
+margin-bottom:50px;
+padding:10px 20px;
+border:1px solid rgba(255,255,255,.2);
+color:white;
+text-decoration:none;
+transition:.3s;
+}
+
+.back:hover{
+background:rgba(255,255,255,.08);
+box-shadow:0 0 10px rgba(255,255,255,.2);
+}
+
+.chapter-number{
+text-align:center;
+letter-spacing:6px;
+font-size:14px;
+opacity:.5;
+}
+
+.chapter-title{
+text-align:center;
+font-size:40px;
+margin-top:15px;
+margin-bottom:60px;
+text-shadow:0 0 10px rgba(255,255,255,.25);
+}
+
+.story{
+font-size:18px;
+opacity:.92;
+}
+
+.story p{
+margin-bottom:28px;
+}
+
+.end{
+text-align:center;
+margin-top:80px;
+font-size:20px;
+letter-spacing:4px;
+opacity:.8;
+}
+
+.next{
+display:flex;
+justify-content:center;
+margin-top:40px;
+}
+
+.next button{
+padding:12px 30px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.15);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.next button:hover{
+background:rgba(255,255,255,.08);
+box-shadow:0 0 10px rgba(255,255,255,.2);
+}
+
+#transition{
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+opacity:0;
+pointer-events:none;
+transition:1s;
+z-index:9999;
+}
+
+#transition.active{
+opacity:1;
+pointer-events:all;
+}
+
+.loading{
+font-size:15px;
+letter-spacing:5px;
+text-shadow:0 0 8px rgba(255,255,255,.8),0 0 15px rgba(255,255,255,.4);
+}
+
+.light-line{
+width:180px;
+height:1px;
+background:white;
+margin-top:15px;
+box-shadow:0 0 15px white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div id="transition">
+<div class="loading">RETURNING TO MENU</div>
+<div class="light-line"></div>
+</div>
+
+<div class="container">
+
+<a href="#" class="back" onclick="backToMenu()">← Back To Menu</a>
+
+<div class="chapter-number">CHAPTER II</div>
+
+<div class="chapter-title">Awakening Fragment</div>
+
+<div class="story">
+
+<p>Daren tidak merasakan lantai di bawah kakinya.</p>
+<p>Tidak merasakan udara. Tidak merasakan tubuhnya sendiri.</p>
+<p>Yang ada hanya cahaya. Putih. Hitam. Putih. Hitam.</p>
+<p>Kedua warna itu saling bertabrakan seperti dua dunia yang tidak seharusnya bertemu.</p>
+<p>"AAAGHHH!!"</p>
+<p>Rasa sakit luar biasa menghantam seluruh tubuhnya. Seolah setiap tulang dihancurkan lalu disusun kembali.</p>
+<p>Lalu semuanya berhenti.</p>
+<p>...</p>
+<p>Perlahan Daren membuka mata.</p>
+<p>"Hah...?"</p>
+<p>Langit biru menyambut pandangannya.</p>
+<p>Gedung sekolah berdiri di hadapannya.</p>
+<p>"Sekolah...?"</p>
+<p>Beberapa detik lalu ia masih berada di rumahnya.</p>
+<p>Masih memegang fragmen hitam itu.</p>
+<p>Namun sekarang ia berdiri di tempat yang sangat familiar.</p>
+<p>Saat mencoba berdiri, ia merasakan sesuatu yang aneh.</p>
+<p>Tubuhnya terasa jauh lebih ringan.</p>
+<p>Indranya terasa lebih tajam.</p>
+<p>Suara langkah kaki yang jauh terdengar jelas di telinganya.</p>
+<p>Lalu sebuah suara menghentikan pikirannya.</p>
+<p>"Eh."</p>
+<p>Daren menoleh.</p>
+<p>Arkan.</p>
+<p>Dan tiga temannya.</p>
+<p>Senyum sinis yang sama seperti biasanya.</p>
+<p>"Si sampah ternyata masih hidup."</p>
+<p>Tawa pecah.</p>
+<p>"Gue kira dia udah pindah sekolah."</p>
+<p>"Mana ada sekolah yang mau nerima dia."</p>
+<p>Daren hanya diam.</p>
+<p>Namun kali ini ada sesuatu yang berbeda di dalam dirinya.</p>
+<p>Arkan melangkah mendekat.</p>
+<p>"Kok diem?"</p>
+<p>BUK!</p>
+<p>Sebuah pukulan menghantam wajah Daren.</p>
+<p>...</p>
+<p>Tidak ada rasa sakit.</p>
+<p>Daren hanya berkedip.</p>
+<p>Arkan mengernyit.</p>
+<p>"Hah?"</p>
+<p>Daren menyentuh pipinya.</p>
+<p>Tidak sakit.</p>
+<p>Seperti digigit semut.</p>
+<p>Arkan memukul lagi.</p>
+<p>BUK! BUK! BUK!</p>
+<p>Tiga pukulan berturut-turut.</p>
+<p>Tetap sama.</p>
+<p>Tidak ada rasa sakit.</p>
+<p>Jantung Daren justru terasa semakin tenang.</p>
+<p>Duk.</p>
+<p>Duk.</p>
+<p>Duk.</p>
+<p>Sesuatu berdenyut dari dalam dadanya.</p>
+<p>Hangat.</p>
+<p>Kuat.</p>
+<p>Hidup.</p>
+<p>"Apa-apaan ini?!" teriak Arkan.</p>
+<p>Daren menatap tangannya sendiri.</p>
+<p>Ia tidak mengerti apa yang sedang terjadi.</p>
+<p>Arkan kembali menyerang.</p>
+<p>Namun kali ini tubuh Daren bergerak sendiri.</p>
+<p>Ia menghindar.</p>
+<p>Mudah.</p>
+<p>Terlalu mudah.</p>
+<p>Mata Arkan membesar.</p>
+<p>"Apa?!"</p>
+<p>Daren mengepalkan tangannya.</p>
+<p>Lalu memukul.</p>
+<p>DUK!!</p>
+<p>Hanya satu pukulan.</p>
+<p>Namun tubuh Arkan langsung terlempar ke belakang.</p>
+<p>BRAK!!</p>
+<p>Seluruh kelas terdiam.</p>
+<p>Tidak ada yang berbicara.</p>
+<p>Tidak ada yang tertawa.</p>
+<p>Semua membeku.</p>
+<p>Termasuk Daren.</p>
+<p>"Apa yang barusan gue lakukan?"</p>
+<p>Untuk pertama kalinya dalam hidupnya...</p>
+<p>Ia melihat ketakutan di wajah orang-orang yang selama ini menyiksanya.</p>
+<p>Duk.</p>
+<p>Duk.</p>
+<p>Duk.</p>
+<p>Denyutan itu kembali muncul.</p>
+<p>Lebih kuat dari sebelumnya.</p>
+<p>Seolah sesuatu sedang tumbuh jauh di dalam tubuhnya.</p>
+<p>🌑</p>
+<p>Di tempat yang sangat jauh.</p>
+<p>Di ruang yang tidak berada di dunia manusia.</p>
+<p>Seorang pria berdiri sendirian dalam kegelapan tanpa batas.</p>
+<p>Rambut hitam panjang.</p>
+<p>Mata tajam.</p>
+<p>Aura yang membuat kehampaan terasa hidup.</p>
+<p>Perlahan ia membuka matanya.</p>
+<p>Lalu tersenyum tipis.</p>
+<p>"Jadi..."</p>
+<p>"Akhirnya kau terbangun."</p>
+<p>Pria itu menatap ke kejauhan.</p>
+<p>Seolah melihat seseorang yang sangat jauh.</p>
+<p>Seseorang bernama Daren Akito.</p>
+<p>"Semoga kau tidak bernasib sama sepertiku."</p>
+<p>Kegelapan kembali sunyi.</p>
+<p>Dan satu nama perlahan muncul.</p>
+<p><b>Kael Vireon.</b></p>
+
+</div>
+
+<div class="end">END OF CHAPTER II</div>
+
+<div class="next">
+<button onclick="alert('Chapter III Coming Soon')">NEXT CHAPTER</button>
+</div>
+
+</div>
+
+<script>
+window.addEventListener("scroll",()=>{
+let scrollTop=document.documentElement.scrollTop;
+let scrollHeight=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+let progress=(scrollTop/scrollHeight)*100;
+document.getElementById("progress").style.width=progress+"%";
+});
+
+function backToMenu(){
+const transition=document.getElementById("transition");
+transition.classList.add("active");
+setTimeout(()=>{
+window.location.href="index.html";
+},1800);
+}
+</script>
+
+</body>
+</html>
