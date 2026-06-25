@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLDS - Chapter V</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+background:#000;
+color:#fff;
+font-family:"Times New Roman",serif;
+line-height:1.9;
+padding:0;
+text-shadow:0 0 3px rgba(255,255,255,.15);
+}
+.progress{
+position:fixed;
+top:0;left:0;
+height:3px;width:0%;
+background:#fff;
+box-shadow:0 0 10px #fff;
+z-index:999;
+}
+.container{
+max-width:850px;
+margin:auto;
+padding:80px 25px;
+}
+.back{
+display:inline-block;
+margin-bottom:50px;
+padding:10px 20px;
+border:1px solid rgba(255,255,255,.2);
+color:#fff;
+text-decoration:none;
+}
+.chapter-number{
+text-align:center;
+letter-spacing:6px;
+opacity:.5;
+}
+.chapter-title{
+text-align:center;
+font-size:40px;
+margin:15px 0 60px;
+text-shadow:0 0 12px rgba(255,255,255,.25);
+}
+.story p{margin-bottom:26px;font-size:18px;}
+.end{
+text-align:center;
+margin-top:70px;
+letter-spacing:4px;
+font-size:20px;
+}
+.next{
+display:flex;
+justify-content:center;
+margin-top:35px;
+}
+.next button{
+padding:12px 30px;
+background:rgba(255,255,255,.05);
+color:white;
+border:1px solid rgba(255,255,255,.15);
+cursor:pointer;
+}
+#transition{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+opacity:0;
+pointer-events:none;
+transition:1s;
+z-index:9999;
+}
+#transition.active{
+opacity:1;
+pointer-events:all;
+}
+.loading{
+letter-spacing:5px;
+}
+.light-line{
+width:180px;
+height:1px;
+background:white;
+margin-top:15px;
+box-shadow:0 0 12px white;
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div id="transition">
+<div class="loading">RETURNING TO MENU</div>
+<div class="light-line"></div>
+</div>
+
+<div class="container">
+
+<a href="#" class="back" onclick="backToMenu()">← Back To Menu</a>
+
+<div class="chapter-number">CHAPTER V</div>
+<div class="chapter-title">The First Pursuit</div>
+
+<div class="story">
+<p>Angin sore berhembus pelan.</p>
+<p>Daren berjalan sendirian setelah pulang sekolah. Tubuhnya terasa berbeda dari hari ke hari. Lebih cepat. Lebih kuat. Lebih peka.</p>
+<p>Namun semakin banyak perubahan terjadi, semakin sedikit jawaban yang ia miliki.</p>
+<p>Tiba-tiba suara langkah kaki terdengar dari belakang.</p>
+<p>Banyak. Terlalu banyak.</p>
+<p>Daren menoleh.</p>
+<p>Arkan berdiri di sana bersama puluhan orang.</p>
+<p>"Kali ini lo gak bakal kabur," kata Arkan sambil tersenyum sinis.</p>
+<p>Daren langsung merasakan firasat buruk.</p>
+<p>Duk. Duk. Duk.</p>
+<p>Inti di dalam tubuhnya kembali berdenyut.</p>
+<p>Tanpa berpikir panjang, Daren berbalik dan berlari.</p>
+<p>"KEJAR DIA!"</p>
+<p>Puluhan orang langsung mengejarnya.</p>
+<p>Awalnya Daren hanya ingin kabur.</p>
+<p>Namun semakin lama ia berlari, semakin ia sadar bahwa kecepatannya bukan lagi kecepatan manusia biasa.</p>
+<p>Gedung-gedung berlalu dengan cepat di sampingnya.</p>
+<p>"Apa gue secepat ini?"</p>
+<p>Beberapa menit kemudian ia memasuki kawasan gudang tua yang sepi.</p>
+<p>Namun itu justru kesalahan.</p>
+<p>Arkan dan teman-temannya berhasil mengepungnya dari segala arah.</p>
+<p>"Sekarang coba lawan gue," ejek Arkan.</p>
+<p>Salah satu anak langsung menyerang.</p>
+<p>Daren menghindar.</p>
+<p>Lalu yang kedua datang.</p>
+<p>Lalu yang ketiga.</p>
+<p>Gerakan mereka terasa lambat di matanya.</p>
+<p>Seolah dunia bergerak lebih pelan.</p>
+<p>BRAK!</p>
+<p>Satu orang jatuh.</p>
+<p>DUK!</p>
+<p>Orang lain terpental.</p>
+<p>Namun jumlah mereka terlalu banyak.</p>
+<p>Daren mulai kelelahan.</p>
+<p>Saat itulah seseorang menyerang dari belakang.</p>
+<p>Daren tidak sempat berbalik.</p>
+<p>Duk.</p>
+<p>DUK.</p>
+<p>DUUUK.</p>
+<p>Inti di dalam tubuhnya berputar semakin cepat.</p>
+<p>Tiba-tiba waktu terasa berhenti.</p>
+<p>Debu membeku di udara.</p>
+<p>Angin berhenti bergerak.</p>
+<p>Daren bisa melihat semuanya.</p>
+<p>Setiap gerakan.</p>
+<p>Setiap napas.</p>
+<p>Setiap detak jantung.</p>
+<p>Lalu dunia kembali normal.</p>
+<p>BOOOOM!</p>
+<p>Gelombang energi tak terlihat meledak dari tubuhnya.</p>
+<p>Semua orang terpental.</p>
+<p>Termasuk Arkan.</p>
+<p>Keheningan memenuhi gudang tua itu.</p>
+<p>Tidak ada yang berani mendekat lagi.</p>
+<p>Satu per satu mereka mundur ketakutan.</p>
+<p>Lalu kabur.</p>
+<p>Daren berdiri sendirian.</p>
+<p>Napasnya berat.</p>
+<p>Ia tidak mengerti apa yang baru saja terjadi.</p>
+<p>"Daren."</p>
+<p>Sebuah suara muncul dari belakangnya.</p>
+<p>Daren menoleh.</p>
+<p>Dan membeku.</p>
+<p>Kael Vireon berdiri di sana.</p>
+<p>Bukan mimpi.</p>
+<p>Bukan bayangan.</p>
+<p>Benar-benar ada.</p>
+<p>Kael tidak menatap Daren.</p>
+<p>Ia menatap langit.</p>
+<p>Daren mengikuti arah pandangannya.</p>
+<p>Dan jantungnya hampir berhenti.</p>
+<p>Langit malam retak.</p>
+<p>Retakan putih raksasa membelah kegelapan.</p>
+<p>Seperti kaca yang pecah.</p>
+<p>Cahaya asing keluar dari baliknya.</p>
+<p>"Apa itu...?"</p>
+<p>Kael menghela napas panjang.</p>
+<p>"Waktumu sudah habis."</p>
+<p>"Maksud lo apa?"</p>
+<p>Kael tersenyum tipis.</p>
+<p>"Mereka telah menemukanmu."</p>
+<p>"Mereka siapa?"</p>
+<p>Kael akhirnya menjawab.</p>
+<p><b>"Musuh yang bahkan aku gagal kalahkan."</b></p>
+<p>Retakan di langit semakin besar.</p>
+<p>Cahaya putih memenuhi dunia.</p>
+<p>Dan Daren menyadari bahwa semua yang ia alami selama ini hanyalah awal.</p>
+</div>
+
+<div class="end">END OF CHAPTER V</div>
+
+<div class="next">
+<button onclick="alert('To Be Continued...')">TO BE CONTINUED</button>
+</div>
+
+</div>
+
+<script>
+window.addEventListener("scroll",()=>{
+let st=document.documentElement.scrollTop;
+let sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+document.getElementById("progress").style.width=((st/sh)*100)+"%";
+});
+
+function backToMenu(){
+document.getElementById("transition").classList.add("active");
+setTimeout(()=>{window.location.href="index.html";},1800);
+}
+</script>
+
+</body>
+</html>
