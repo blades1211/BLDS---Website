@@ -21,8 +21,8 @@ color:#fff;
 overflow-x:hidden;
 
 text-shadow:
-0 0 3px rgba(255,255,255,.25),
-0 0 6px rgba(255,255,255,.15);
+0 0 4px rgba(255,255,255,.5),
+0 0 8px rgba(255,255,255,.25);
 }
 
 .container{
@@ -75,6 +75,11 @@ font-weight:600;
 
 letter-spacing:3px;
 text-align:center;
+
+text-shadow:
+0 0 6px rgba(255,255,255,.9),
+0 0 12px rgba(255,255,255,.5),
+0 0 25px rgba(255,255,255,.2);
 }
 
 /* ========================= */
@@ -400,16 +405,9 @@ document.getElementById("transition");
 
 transition.classList.add("active");
 
-/*
-GANTI KE chapter1.html
-SETELAH FILE SUDAH ADA
-*/
-
 setTimeout(()=>{
 
-alert("Chapter 1 belum dibuat.");
-
-transition.classList.remove("active");
+window.location.href="chapter1.html";
 
 },1800);
 
