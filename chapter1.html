@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BLDS - Chapter 1</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#000;
+color:#fff;
+font-family:"Times New Roman",serif;
+line-height:1.9;
+
+text-shadow:
+0 0 3px rgba(255,255,255,.15);
+
+animation:fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+}
+to{
+opacity:1;
+}
+}
+
+/* ===================== */
+/* PROGRESS BAR */
+/* ===================== */
+
+.progress{
+position:fixed;
+top:0;
+left:0;
+height:3px;
+width:0%;
+background:white;
+box-shadow:
+0 0 8px white;
+z-index:999;
+}
+
+/* ===================== */
+/* CONTAINER */
+/* ===================== */
+
+.container{
+max-width:850px;
+margin:auto;
+padding:80px 25px;
+}
+
+/* ===================== */
+/* BACK BUTTON */
+/* ===================== */
+
+.back{
+
+display:inline-block;
+
+margin-bottom:50px;
+
+padding:10px 20px;
+
+border:
+1px solid rgba(255,255,255,.2);
+
+color:white;
+
+text-decoration:none;
+
+transition:.3s;
+}
+
+.back:hover{
+
+background:
+rgba(255,255,255,.08);
+
+box-shadow:
+0 0 10px rgba(255,255,255,.2);
+
+}
+
+/* ===================== */
+/* TITLE */
+/* ===================== */
+
+.chapter-number{
+
+text-align:center;
+
+letter-spacing:6px;
+
+font-size:14px;
+
+opacity:.5;
+
+}
+
+.chapter-title{
+
+text-align:center;
+
+font-size:40px;
+
+margin-top:15px;
+
+margin-bottom:60px;
+
+text-shadow:
+0 0 10px rgba(255,255,255,.25);
+
+}
+
+/* ===================== */
+/* NOVEL */
+/* ===================== */
+
+.story{
+
+font-size:18px;
+
+opacity:.92;
+
+}
+
+.story p{
+
+margin-bottom:28px;
+
+}
+
+/* ===================== */
+/* END */
+/* ===================== */
+
+.end{
+
+text-align:center;
+
+margin-top:80px;
+
+font-size:20px;
+
+letter-spacing:4px;
+
+opacity:.8;
+
+}
+
+.next{
+
+display:flex;
+justify-content:center;
+
+margin-top:40px;
+
+}
+
+.next button{
+
+padding:12px 30px;
+
+background:
+rgba(255,255,255,.05);
+
+border:
+1px solid rgba(255,255,255,.15);
+
+color:white;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.next button:hover{
+
+background:
+rgba(255,255,255,.08);
+
+box-shadow:
+0 0 10px rgba(255,255,255,.2);
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="container">
+
+<a href="index.html" class="back">
+← Back To Menu
+</a>
+
+<div class="chapter-number">
+CHAPTER I
+</div>
+
+<div class="chapter-title">
+The Unseen Boy
+</div>
+
+<div class="story">
+
+<p>
+Daren Akito hidup seperti bayangan di dunia yang tidak pernah benar-benar mengakuinya.
+</p>
+
+<p>
+Di sekolah, ia bukan siapa-siapa.
+Bukan siswa terpintar.
+Bukan atlet.
+Bukan juga anak populer yang selalu menjadi pusat perhatian.
+</p>
+
+<p>
+Ia hanyalah seseorang yang selalu ada, namun tidak pernah dianggap ada.
+</p>
+
+<p>
+Setiap pagi ia berjalan menuju sekolah sendirian.
+Tidak ada teman yang menyapanya.
+Tidak ada yang menunggunya di gerbang.
+Tidak ada yang benar-benar peduli apakah ia datang atau tidak.
+</p>
+
+<p>
+Hari itu tidak berbeda.
+</p>
+
+<p>
+Langkahnya memasuki kelas dengan tenang.
+Beberapa siswa melihatnya sekilas sebelum kembali tertawa bersama kelompok mereka.
+</p>
+
+<p>
+Seolah kehadirannya tidak lebih penting daripada kursi kosong di sudut ruangan.
+</p>
+
+<p>
+Daren duduk di bangkunya dan menatap jendela.
+Langit terlihat cerah.
+Terlalu cerah untuk seseorang yang hidupnya terasa begitu gelap.
+</p>
+
+<p>
+Bel berbunyi.
+Pelajaran dimulai.
+Namun perhatian Daren tidak pernah benar-benar berada di kelas.
+</p>
+
+<p>
+Ia sudah terlalu terbiasa mengabaikan dunia.
+Karena dunia lebih dulu mengabaikannya.
+</p>
+
+<p>
+Saat jam istirahat tiba, suara tawa terdengar dari belakang.
+</p>
+
+<p>
+Arkan.
+</p>
+
+<p>
+Nama itu selalu membawa masalah.
+</p>
+
+<p>
+Arkan berjalan mendekat bersama beberapa temannya.
+Senyumnya tipis.
+Senyum yang sudah terlalu sering dilihat Daren.
+</p>
+
+<p>
+"Eh, si sampah ternyata masuk sekolah juga."
+</p>
+
+<p>
+Tawa langsung memenuhi ruangan.
+</p>
+
+<p>
+Daren hanya diam.
+</p>
+
+<p>
+Ia tahu jika menjawab, keadaan hanya akan menjadi lebih buruk.
+</p>
+
+<p>
+Namun diam pun tidak pernah membuat semuanya berhenti.
+</p>
+
+<p>
+Hari itu berakhir seperti hari-hari sebelumnya.
+Tubuh penuh luka.
+Hati penuh lelah.
+</p>
+
+<p>
+Ketika matahari mulai tenggelam, Daren berjalan pulang menuju rumahnya.
+</p>
+
+<p>
+Rumah kecil yang terasa lebih seperti bangunan kosong daripada tempat tinggal.
+</p>
+
+<p>
+Tidak ada yang menunggunya.
+Tidak ada suara keluarga.
+Tidak ada kehangatan.
+</p>
+
+<p>
+Hanya kesunyian.
+</p>
+
+<p>
+Malam mulai turun.
+</p>
+
+<p>
+Seperti biasa, Daren membersihkan rumah.
+Menyapu lantai.
+Mengelap debu.
+Mengisi waktu agar pikirannya tidak tenggelam terlalu jauh.
+</p>
+
+<p>
+Namun saat memindahkan sebuah lemari tua...
+</p>
+
+<p>
+Ia menyadari sesuatu.
+</p>
+
+<p>
+Salah satu papan lantai terlihat sedikit terangkat.
+</p>
+
+<p>
+Daren berjongkok.
+</p>
+
+<p>
+Perlahan ia mengangkat papan itu.
+</p>
+
+<p>
+Di bawahnya...
+</p>
+
+<p>
+Terdapat sebuah kotak kecil berwarna hitam.
+</p>
+
+<p>
+Kotak yang seharusnya tidak berada di sana.
+</p>
+
+<p>
+Jantungnya berdetak sedikit lebih cepat.
+</p>
+
+<p>
+Dengan ragu, ia membuka kotak itu.
+</p>
+
+<p>
+Dan di dalamnya...
+</p>
+
+<p>
+Terdapat sebuah fragmen kristal hitam yang memancarkan cahaya samar.
+</p>
+
+<p>
+Seolah benda itu hidup.
+</p>
+
+<p>
+Daren menatapnya lama.
+</p>
+
+<p>
+Lalu perlahan mengulurkan tangan.
+</p>
+
+<p>
+Saat ujung jarinya menyentuh fragmen tersebut—
+</p>
+
+<p>
+Cahaya putih dan hitam meledak memenuhi ruangan.
+</p>
+
+</div>
+
+<div class="end">
+END OF CHAPTER I
+</div>
+
+<div class="next">
+
+<button onclick="alert('Chapter II Coming Soon')">
+NEXT CHAPTER
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+window.addEventListener("scroll",()=>{
+
+let scrollTop =
+document.documentElement.scrollTop;
+
+let scrollHeight =
+document.documentElement.scrollHeight -
+document.documentElement.clientHeight;
+
+let progress =
+(scrollTop / scrollHeight) * 100;
+
+document.getElementById("progress").style.width =
+progress + "%";
+
+});
+
+</script>
+
+</body>
+</html>
