@@ -3,206 +3,721 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beyond The Fragment</title>
+    <title>Beyond The Fragment — A Digital Novel</title>
     <style>
         :root {
-            --bg-color: #070707;
-            --text-color: #dcdcdc;
-            --accent-color: #ffffff;
-            --glow: 0 0 12px rgba(255, 255, 255, 0.25);
+            --bg-color: #050505;
+            --surface-color: #0a0a0a;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --accent-white: #ffffff;
+            --glow-color: rgba(255, 255, 255, 0.35);
+            --glow-soft: rgba(255, 255, 255, 0.12);
+            --border-color: #1f1f1f;
+            --font-title: "Helvetica Neue", Arial, sans-serif;
+            --font-body: "Georgia", serif;
         }
-        
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: "Georgia", serif;
+
+        * {
             margin: 0;
             padding: 0;
-            line-height: 1.6;
-            animation: fadeIn 1.2s ease-in-out;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .container {
-            max-width: 650px;
+        /* Ambient subtle radial gradient background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --------------------------------------------------
+           WHITE FLASH OVERLAY FOR CINEMATIC TRANSITION
+        -------------------------------------------------- */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .flash-overlay.active {
+            opacity: 1;
+        }
+
+        /* Page transition out overlay */
+        .page-fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page-fade-overlay.active {
+            opacity: 1;
+        }
+
+        /* --------------------------------------------------
+           CONTAINER & LAYOUT
+        -------------------------------------------------- */
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 680px;
             margin: 0 auto;
-            padding: 60px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            padding: 0 24px;
             box-sizing: border-box;
         }
 
-        .header {
+        /* --------------------------------------------------
+           HERO SECTION
+        -------------------------------------------------- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            margin-bottom: 40px;
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .logo-container {
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: heroFadeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
         }
 
         .logo {
-            max-width: 130px;
-            margin-bottom: 20px;
-            filter: drop-shadow(var(--glow));
+            width: 100%;
+            max-width: 110px;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25));
+            animation: logoPulse 5s ease-in-out infinite alternate;
         }
 
-        h1 {
-            font-family: "Helvetica Neue", Arial, sans-serif;
-            font-size: 26px;
+        @keyframes logoPulse {
+            0% {
+                filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+                opacity: 0.9;
+            }
+            100% {
+                filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.45));
+                opacity: 1;
+            }
+        }
+
+        .title {
+            font-family: var(--font-title);
+            font-size: clamp(22px, 5vw, 32px);
             font-weight: 300;
-            letter-spacing: 4px;
-            color: var(--accent-color);
-            margin: 0 0 10px 0;
+            letter-spacing: 6px;
+            color: var(--accent-white);
             text-transform: uppercase;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: heroTitleIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.5s;
+            text-shadow: 0 0 12px var(--glow-color), 0 0 30px var(--glow-soft);
+        }
+
+        @keyframes heroTitleIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .subtitle {
-            font-family: "Helvetica Neue", Arial, sans-serif;
-            font-size: 12px;
-            letter-spacing: 6px;
-            color: #888;
+            font-family: var(--font-title);
+            font-size: clamp(10px, 2.5vw, 12px);
+            letter-spacing: 5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 48px;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: heroTitleIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes heroFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --------------------------------------------------
+           INTERACTIVE FRAGMENT SYMBOL
+        -------------------------------------------------- */
+        .fragment-wrapper {
+            margin-top: 10px;
+            opacity: 0;
+            animation: heroFadeIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1.1s;
+            position: relative;
+            z-index: 50;
+        }
+
+        .fragment-btn {
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-white);
+            font-size: clamp(24px, 6vw, 32px);
+            transition: transform 0.4s ease, filter 0.4s ease;
+            text-shadow: 0 0 10px var(--glow-color), 0 0 20px rgba(255, 255, 255, 0.2);
+            user-select: none;
+        }
+
+        .fragment-btn:hover {
+            transform: scale(1.15);
+            text-shadow: 0 0 16px rgba(255, 255, 255, 0.8), 0 0 35px rgba(255, 255, 255, 0.5);
+        }
+
+        .fragment-btn:focus-visible {
+            outline: 1px solid rgba(255, 255, 255, 0.4);
+            outline-offset: 8px;
+            border-radius: 4px;
+        }
+
+        /* --------------------------------------------------
+           CINEMATIC ANIMATION STAGES FOR FRAGMENT
+        -------------------------------------------------- */
+        
+        /* Fixed overlay container for full-screen sequence centering */
+        .fragment-stage-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 500;
+        }
+
+        .fragment-animated-symbol {
+            display: none;
+            color: var(--accent-white);
+            font-size: 32px;
+            transform-origin: center center;
+            will-change: transform, filter, opacity;
+        }
+
+        /* STEP 2: Impact from front to center */
+        .stage-impact {
+            display: block;
+            animation: fragmentImpact 0.6s cubic-bezier(0.11, 0.85, 0.3, 1) forwards;
+        }
+
+        @keyframes fragmentImpact {
+            0% {
+                transform: scale(8) translateZ(0);
+                filter: blur(12px) drop-shadow(0 0 50px rgba(255,255,255,0.9));
+                opacity: 0;
+            }
+            70% {
+                transform: scale(0.9) translateZ(0);
+                filter: blur(0px) drop-shadow(0 0 25px rgba(255,255,255,0.8));
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) translateZ(0);
+                filter: blur(0px) drop-shadow(0 0 15px rgba(255,255,255,0.5));
+                opacity: 1;
+            }
+        }
+
+        /* STEP 3: Slow Heartbeat Pulse (3 seconds) */
+        .stage-pulse {
+            display: block;
+            animation: fragmentHeartbeat 3s ease-in-out infinite;
+        }
+
+        @keyframes fragmentHeartbeat {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            }
+            15% {
+                transform: scale(1.22);
+                filter: drop-shadow(0 0 35px rgba(255,255,255,0.85));
+            }
+            28% {
+                transform: scale(1.02);
+                filter: drop-shadow(0 0 18px rgba(255,255,255,0.5));
+            }
+            42% {
+                transform: scale(1.28);
+                filter: drop-shadow(0 0 45px rgba(255,255,255,0.95));
+            }
+            60% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            }
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            }
+        }
+
+        /* STEP 4: Expand & Grow */
+        .stage-grow {
+            display: block;
+            animation: fragmentGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fragmentGrow {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+                opacity: 1;
+            }
+            100% {
+                transform: scale(25);
+                filter: drop-shadow(0 0 120px rgba(255,255,255,1));
+                opacity: 0.95;
+            }
+        }
+
+        /* --------------------------------------------------
+           LORE SECTION
+        -------------------------------------------------- */
+        .lore-section {
+            display: none;
+            padding: 80px 0 60px 0;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lore-section.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .lore-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .divider-symbol {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+
+        .lore-title {
+            font-family: var(--font-title);
+            font-size: 13px;
+            letter-spacing: 5px;
+            color: var(--text-muted);
             text-transform: uppercase;
         }
 
-        .symbol {
-            font-size: 20px;
-            color: var(--accent-color);
-            margin: 30px 0;
-            text-shadow: var(--glow);
-            animation: pulse 2.5s infinite alternate;
+        .lore-content {
+            font-size: clamp(16px, 3.8vw, 18px);
+            line-height: 1.95;
+            color: #d0d0d0;
+            text-align: justify;
+            text-justify: inter-word;
+            hyphens: auto;
         }
 
-        @keyframes pulse {
-            from { opacity: 0.4; text-shadow: 0 0 4px rgba(255,255,255,0.2); }
-            to { opacity: 1; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        .lore-content p {
+            margin-bottom: 28px;
+            font-weight: 300;
+        }
+
+        .lore-content p strong {
+            color: var(--accent-white);
+            font-weight: 400;
+        }
+
+        .lore-quote {
+            text-align: center;
+            font-style: italic;
+            color: var(--accent-white);
+            margin: 45px 0;
+            font-size: clamp(17px, 4vw, 20px);
+            line-height: 1.7;
+            padding: 0 10px;
+        }
+
+        /* --------------------------------------------------
+           BEGIN THE STORY / CALL TO ACTION SECTION
+        -------------------------------------------------- */
+        .cta-section {
+            text-align: center;
+            padding: 70px 0 100px 0;
+            border-top: 1px solid #141414;
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-family: var(--font-title);
+            font-size: 13px;
+            letter-spacing: 6px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 32px;
         }
 
         .begin-btn {
             display: inline-block;
-            padding: 14px 28px;
-            margin-bottom: 40px;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
+            padding: 16px 36px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: var(--accent-white);
             text-decoration: none;
-            font-family: "Helvetica Neue", Arial, sans-serif;
-            font-size: 12px;
-            letter-spacing: 3px;
+            font-family: var(--font-title);
+            font-size: 11px;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: var(--glow);
+            transition: all 0.35s ease;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
         .begin-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
+            border-color: var(--accent-white);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
         }
 
-        .chapter-list {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 60px;
+        .begin-btn:active {
+            transform: scale(0.97) translateY(0);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
         }
 
-        .chapter-btn {
-            display: block;
-            width: 100%;
-            padding: 20px;
-            background: transparent;
-            border: 1px solid #222;
-            color: var(--text-color);
-            text-decoration: none;
+        /* --------------------------------------------------
+           SCROLL REVEAL ANIMATIONS
+        -------------------------------------------------- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            filter: blur(3px);
+            transition: opacity 1s ease, transform 1s ease, filter 1s ease;
+            will-change: opacity, transform, filter;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0px);
+        }
+
+        /* --------------------------------------------------
+           FOOTER
+        -------------------------------------------------- */
+        .footer {
+            border-top: 1px solid #141414;
+            padding: 40px 0;
             text-align: center;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .chapter-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-            box-shadow: var(--glow);
-        }
-
-        .ch-num {
-            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-family: var(--font-title);
             font-size: 11px;
             letter-spacing: 3px;
-            color: #777;
-            display: block;
-            margin-bottom: 5px;
+            color: #555555;
+            text-transform: uppercase;
         }
 
-        .ch-title {
-            font-size: 16px;
-            letter-spacing: 1px;
-        }
-
-        .footer {
-            margin-top: auto;
-            text-align: center;
-            font-family: "Helvetica Neue", Arial, sans-serif;
+        .footer-title {
+            color: #777777;
+            margin-bottom: 16px;
             font-size: 11px;
-            letter-spacing: 2px;
-            border-top: 1px solid #222;
-            width: 100%;
-            padding-top: 30px;
-            padding-bottom: 20px;
         }
 
-        .footer a {
-            color: #666;
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: #888888;
             text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
         }
 
-        .footer a:hover {
-            color: var(--accent-color);
+        .footer-links a:hover {
+            color: var(--accent-white);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+
+        /* --------------------------------------------------
+           RESPONSIVE ADJUSTMENTS
+        -------------------------------------------------- */
+        @media (max-width: 600px) {
+            .wrapper {
+                padding: 0 20px;
+            }
+            .hero {
+                padding: 40px 0;
+            }
+            .logo {
+                max-width: 90px;
+            }
+            .title {
+                letter-spacing: 4px;
+            }
+            .subtitle {
+                letter-spacing: 3px;
+                margin-bottom: 36px;
+            }
+            .lore-content p {
+                line-height: 1.85;
+                margin-bottom: 22px;
+            }
+            .cta-section {
+                padding: 50px 0 80px 0;
+            }
+            .begin-btn {
+                padding: 14px 30px;
+                width: 100%;
+                max-width: 280px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="logo.png" alt="Beyond The Fragment Logo" class="logo">
-            <h1>Beyond The Fragment</h1>
-            <div class="subtitle">A Fictional Novel</div>
-            <div class="symbol">♦</div>
-        </div>
 
-        <a href="chapter1.html" class="begin-btn">BEGIN READING</a>
+    <!-- OVERLAYS FOR CINEMATIC TRANSITIONS -->
+    <div class="flash-overlay" id="flashOverlay"></div>
+    <div class="page-fade-overlay" id="pageFadeOverlay"></div>
 
-        <div class="chapter-list">
-            <a href="chapter1.html" class="chapter-btn">
-                <span class="ch-num">CHAPTER I</span>
-                <span class="ch-title">THE UNSEEN BOY</span>
-            </a>
-            <a href="chapter2.html" class="chapter-btn">
-                <span class="ch-num">CHAPTER II</span>
-                <span class="ch-title">THE AWAKENING</span>
-            </a>
-            <a href="chapter3.html" class="chapter-btn">
-                <span class="ch-num">CHAPTER III</span>
-                <span class="ch-title">THE VOICE BEYOND DARKNESS</span>
-            </a>
-            <a href="chapter4.html" class="chapter-btn">
-                <span class="ch-num">CHAPTER IV</span>
-                <span class="ch-title">THE CORE</span>
-            </a>
-            <a href="chapter5.html" class="chapter-btn">
-                <span class="ch-num">CHAPTER V</span>
-                <span class="ch-title">THE FIRST PURSUIT</span>
-            </a>
-        </div>
-
-        <div class="footer">
-            <a href="https://discord.gg/r4dM4QFteV" target="_blank">DISCORD</a>
-            <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank">WHATSAPP</a>
-        </div>
+    <!-- FULLSCREEN ANIMATED STAGE FOR INTERACTIVE FRAGMENT -->
+    <div class="fragment-stage-container" id="stageContainer">
+        <div class="fragment-animated-symbol" id="animSymbol">♦</div>
     </div>
+
+    <!-- MAIN PAGE CONTENT -->
+    <div class="wrapper">
+        
+        <!-- HERO SECTION -->
+        <section class="hero" id="heroSection">
+            <div class="logo-container">
+                <img src="logo.png" alt="Beyond The Fragment Logo" class="logo">
+            </div>
+            
+            <h1 class="title">Beyond The Fragment</h1>
+            <div class="subtitle">A Fictional Novel</div>
+
+            <div class="fragment-wrapper">
+                <button class="fragment-btn" id="fragmentBtn" aria-label="Activate the Fragment" title="Activate the Fragment">
+                    ♦
+                </button>
+            </div>
+        </section>
+
+        <!-- LORE SECTION (Revealed after interactive sequence) -->
+        <section class="lore-section" id="loreSection">
+            <div class="lore-header scroll-reveal">
+                <div class="divider-symbol">♦</div>
+                <h2 class="lore-title">The Foundation</h2>
+            </div>
+
+            <div class="lore-content">
+                <p class="scroll-reveal">
+                    Before the world fractured, there was only the <strong>Core</strong>—an absolute anchor bound to the very essence of its bearer. A Core does not merely exist; it listens, reflects, and bends to the deepest qualities, convictions, and inner shadows of the one who holds it.
+                </p>
+
+                <p class="scroll-reveal">
+                    What remains scattered across the silent void are only <strong>Fragments</strong>.
+                </p>
+
+                <blockquote class="lore-quote scroll-reveal">
+                    "A Fragment is not the Core itself.<br>It is merely a piece of something far greater."
+                </blockquote>
+
+                <p class="scroll-reveal">
+                    When awakening occurs, the energy manifests through dual natures. <strong>Flames</strong> arise as radiant manifestations born of conviction, willpower, and alignment with one’s noble truth. Yet, where light takes form, <strong>Shadow Flames</strong> inevitably follow—darker counterparts forged from repressed anger, fear, and unresolved trauma.
+                </p>
+
+                <p class="scroll-reveal">
+                    For Darren Akito, who spent his youth existing as a forgotten ghost in the shadows, discovering the cold shard buried beneath his room was not an accident. It was an awakening to a force that had been waiting for someone truly unseen.
+                </p>
+            </div>
+
+            <!-- BEGIN THE STORY CTA -->
+            <div class="cta-section scroll-reveal">
+                <div class="cta-title">Begin The Story</div>
+                <a href="chapter1.html" class="begin-btn" id="beginBtn">
+                    Begin Reading
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer scroll-reveal">
+            <div class="footer-title">Beyond The Fragment</div>
+            <div class="footer-links">
+                <a href="https://discord.gg/r4dM4QFteV" target="_blank" rel="noopener">Discord</a>
+                <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT FOR INTERACTION & SEQUENCING -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fragmentBtn = document.getElementById('fragmentBtn');
+            const heroSection = document.getElementById('heroSection');
+            const loreSection = document.getElementById('loreSection');
+            const animSymbol = document.getElementById('animSymbol');
+            const flashOverlay = document.getElementById('flashOverlay');
+            const pageFadeOverlay = document.getElementById('pageFadeOverlay');
+            const beginBtn = document.getElementById('beginBtn');
+
+            let isSequenceRunning = false;
+
+            /* --------------------------------------------------
+               STEP 1-10: INTERACTIVE FRAGMENT CINEMATIC SEQUENCE
+            -------------------------------------------------- */
+            fragmentBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isSequenceRunning) return;
+                isSequenceRunning = true;
+
+                // Hide static hero fragment button
+                fragmentBtn.style.visibility = 'hidden';
+
+                // STEP 2: Impact from front to center
+                animSymbol.className = 'fragment-animated-symbol stage-impact';
+
+                // STEP 3: After impact (600ms), transition to 3-second heartbeat pulse
+                setTimeout(() => {
+                    animSymbol.className = 'fragment-animated-symbol stage-pulse';
+
+                    // STEP 4: After 3 seconds pulse, scale up and grow
+                    setTimeout(() => {
+                        animSymbol.className = 'fragment-animated-symbol stage-grow';
+
+                        // STEP 5: White Flash peak near end of grow
+                        setTimeout(() => {
+                            flashOverlay.classList.add('active');
+
+                            // STEP 6: Fade out flash & transform screen to Lore
+                            setTimeout(() => {
+                                // Reset stage symbol & hero
+                                animSymbol.className = 'fragment-animated-symbol';
+                                heroSection.style.display = 'none';
+
+                                // Reveal Lore Section
+                                loreSection.classList.add('visible');
+
+                                // Fade out white flash
+                                flashOverlay.classList.remove('active');
+
+                                // Re-evaluate scroll reveal observer for newly visible content
+                                initScrollObserver();
+
+                                // Smoothly scroll slightly to guide reader into lore
+                                window.scrollTo({ top: 0, behavior: 'instant' });
+
+                                isSequenceRunning = false;
+                            }, 500);
+
+                        }, 900); // Trigger flash towards end of grow animation
+
+                    }, 3000); // 3 seconds heartbeat duration
+
+                }, 600); // 600ms impact duration
+            });
+
+            /* --------------------------------------------------
+               SCROLL REVEAL OBSERVER (Fade-in & out on scroll)
+            -------------------------------------------------- */
+            let observer;
+            function initScrollObserver() {
+                if (observer) observer.disconnect();
+
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px 0px -40px 0px',
+                    threshold: 0.12
+                };
+
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        } else {
+                            // Allows elements to fade out/in naturally on scrolling up and down
+                            entry.target.classList.remove('active');
+                        }
+                    });
+                }, observerOptions);
+
+                const revealElements = document.querySelectorAll('.scroll-reveal');
+                revealElements.forEach(el => observer.observe(el));
+            }
+
+            // Initialize observer on load
+            initScrollObserver();
+
+            /* --------------------------------------------------
+               BUTTON TRANSITION FOR 'BEGIN READING'
+            -------------------------------------------------- */
+            if (beginBtn) {
+                beginBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetUrl = beginBtn.getAttribute('href');
+
+                    pageFadeOverlay.classList.add('active');
+
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 700);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
