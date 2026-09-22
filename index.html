@@ -3,999 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLACKLIGHTDOMS — Official Novel</title>
-    <meta name="description" content="Official website for BLACKLIGHTDOMS Novel. Enter the supernatural mystery.">
+    <title>Beyond The Fragment</title>
     <style>
-        /* ==========================================================================
-           1. RESET & VARIABLES
-           ========================================================================== */
         :root {
-            --bg-black: #050505;
-            --bg-surface: #0e0e0e;
-            --bg-card: #141414;
-            --border-dim: rgba(255, 255, 255, 0.12);
-            --border-bright: rgba(255, 255, 255, 0.4);
-            
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-muted: #666666;
-            
-            --glow-soft: 0 0 12px rgba(255, 255, 255, 0.25);
-            --glow-medium: 0 0 20px rgba(255, 255, 255, 0.4);
-            --glow-strong: 0 0 35px rgba(255, 255, 255, 0.7);
-            
-            --font-serif: "Georgia", "Times New Roman", serif;
-            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            
-            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --bg-color: #070707;
+            --text-color: #dcdcdc;
+            --accent-color: #ffffff;
+            --glow: 0 0 12px rgba(255, 255, 255, 0.25);
         }
-
-        * {
-            box-sizing: border-box;
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Georgia", serif;
             margin: 0;
             padding: 0;
-        }
-
-        html {
-            background-color: var(--bg-black);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            font-size: 16px;
             line-height: 1.6;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 1.2s ease-in-out;
         }
-
-        body {
-            position: relative;
-            min-height: 100vh;
-            background-color: var(--bg-black);
-            overflow-x: hidden;
-        }
-
-        /* Ambient Glow Background */
-        .ambient-bg {
-            position: fixed;
-            top: -20%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80vw;
-            height: 80vh;
-            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
-            pointer-events: none;
-            z-index: 1;
-            animation: ambientPulse 20s infinite alternate ease-in-out;
-        }
-
-        @keyframes ambientPulse {
-            0% { opacity: 0.3; transform: translateX(-50%) scale(0.9); }
-            100% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #000;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
-            box-shadow: var(--glow-soft);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #666;
-        }
-
-        /* ==========================================================================
-           2. TYPOGRAPHY & GLOW SYSTEM
-           ========================================================================== */
-        /* UI Titles and Headers (GLOW ALLOWED) */
-        .glow-title, h1, h2, h3, .nav-logo, .brand-text, .btn-glow {
-            text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-        }
-
-        .glow-title-strong {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-        }
-
-        /* Symbol Core / Fragment (♦) */
-        .symbol-core {
-            display: inline-block;
-            color: #ffffff;
-            font-size: 1.2rem;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.4);
-            animation: corePulse 3s infinite ease-in-out;
-            user-select: none;
-        }
-
-        @keyframes corePulse {
-            0% { opacity: 0.6; transform: scale(0.95); text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
-            50% { opacity: 1; transform: scale(1.1); text-shadow: 0 0 25px rgba(255, 255, 255, 0.9); }
-            100% { opacity: 0.6; transform: scale(0.95); text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
-        }
-
-        /* Story/Lore Descriptions (NO GLOW - Clean Readability) */
-        .story-text, .lore-text, p.desc {
-            font-family: var(--font-serif);
-            color: var(--text-secondary);
-            text-shadow: none !important;
-            font-size: 1rem;
-            line-height: 1.8;
-        }
-
-        /* ==========================================================================
-           3. LOADING & TRANSITION OVERLAY
-           ========================================================================== */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s var(--transition-smooth);
-        }
-
-        #loading-screen .symbol-core {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        #loading-screen .loading-brand {
-            font-family: var(--font-sans);
-            letter-spacing: 0.3em;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1.5s forwards 0.5s;
-        }
-
-        #page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            z-index: 9998;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-
-        #page-transition.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        /* ==========================================================================
-           4. OPENING HERO SCREEN (ENTER NOVEL)
-           ========================================================================== */
-        #opening-screen {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .logo-container {
-            position: relative;
-            margin-bottom: 30px;
-            animation: floatLogo 6s infinite ease-in-out;
-        }
-
-        @keyframes floatLogo {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0); }
-        }
-
-        .official-logo {
-            max-width: 160px;
-            height: auto;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
-            transition: filter 0.5s ease;
-        }
-
-        .official-logo:hover {
-            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
-        }
-
-        .opening-title {
-            font-family: var(--font-serif);
-            font-size: 2.2rem;
-            letter-spacing: 0.2em;
-            color: #fff;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            font-weight: 400;
-        }
-
-        .opening-subtitle {
-            font-family: var(--font-sans);
-            font-size: 0.75rem;
-            letter-spacing: 0.4em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 24px;
-        }
-
-        .opening-quote {
-            font-family: var(--font-serif);
-            font-style: italic;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 32px;
-            max-width: 400px;
-        }
-
-        .opening-symbol {
-            margin-bottom: 40px;
-        }
-
-        /* Buttons */
-        .btn-enter {
-            display: inline-block;
-            background: transparent;
-            color: #fff;
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            padding: 16px 36px;
-            border: 1px solid var(--border-bright);
-            border-radius: 2px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.4s var(--transition-smooth);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .btn-enter:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: #ffffff;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
-            color: #ffffff;
-        }
-
-        .btn-enter:active {
-            transform: scale(0.98);
-            box-shadow: 0 0 35px rgba(255, 255, 255, 0.8);
-        }
-
-        /* Fade-in sequence for Opening */
-        .fade-seq-1 { opacity: 0; animation: fadeIn 1s forwards 0.2s; }
-        .fade-seq-2 { opacity: 0; animation: fadeIn 1s forwards 0.5s; }
-        .fade-seq-3 { opacity: 0; animation: fadeIn 1s forwards 0.8s; }
-        .fade-seq-4 { opacity: 0; animation: fadeIn 1s forwards 1.1s; }
-        .fade-seq-5 { opacity: 0; animation: fadeIn 1s forwards 1.4s; }
 
         @keyframes fadeIn {
+            from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        /* ==========================================================================
-           5. MAIN NOVEL CONTENT CONTAINER
-           ========================================================================== */
-        #main-content {
-            display: none; /* Hidden until Enter clicked */
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Top Navigation */
-        nav.navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-dim);
-            z-index: 1000;
-            transition: opacity 0.5s ease;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .nav-brand-logo {
-            width: 28px;
-            height: auto;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-        }
-
-        .nav-brand-text {
-            font-family: var(--font-serif);
-            font-size: 0.9rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        /* Continue Reading Notification Bar */
-        #continue-bar {
-            display: none;
-            margin-top: 100px;
-            padding: 16px 24px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-bright);
-            border-radius: 2px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(255,255,255,0.05);
-        }
-
-        #continue-bar span {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        /* Hero Section Inside Main */
-        .novel-hero {
-            padding: 140px 0 80px 0;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-family: var(--font-serif);
-            font-size: 2.8rem;
-            letter-spacing: 0.2em;
-            font-weight: 400;
-            margin-bottom: 8px;
-        }
-
-        .hero-sub {
-            font-size: 0.8rem;
-            letter-spacing: 0.4em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 24px;
-        }
-
-        .hero-tagline {
-            font-family: var(--font-serif);
-            font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            font-size: 1.05rem;
-        }
-
-        /* Intro Section */
-        .intro-section {
-            padding: 60px 0;
-            text-align: center;
-            border-top: 1px solid var(--border-dim);
-            border-bottom: 1px solid var(--border-dim);
-        }
-
-        .intro-container {
+        .container {
             max-width: 650px;
             margin: 0 auto;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        /* Fragment Symbol Feature */
-        .fragment-feature {
-            padding: 80px 0;
+        .header {
             text-align: center;
+            margin-bottom: 40px;
         }
 
-        .fragment-feature .symbol-core {
-            font-size: 3rem;
+        .logo {
+            max-width: 130px;
             margin-bottom: 20px;
+            filter: drop-shadow(var(--glow));
         }
 
-        .fragment-feature h3 {
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            letter-spacing: 0.2em;
+        h1 {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-size: 26px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: var(--accent-color);
+            margin: 0 0 10px 0;
             text-transform: uppercase;
-            margin-bottom: 12px;
         }
 
-        /* ==========================================================================
-           6. CHAPTER LIST SECTION
-           ========================================================================== */
-        .chapters-section {
-            padding: 60px 0 100px 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-family: var(--font-serif);
-            font-size: 1.8rem;
-            letter-spacing: 0.2em;
+        .subtitle {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: #888;
             text-transform: uppercase;
-            margin-bottom: 8px;
+        }
+
+        .symbol {
+            font-size: 20px;
+            color: var(--accent-color);
+            margin: 30px 0;
+            text-shadow: var(--glow);
+            animation: pulse 2.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.4; text-shadow: 0 0 4px rgba(255,255,255,0.2); }
+            to { opacity: 1; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        }
+
+        .begin-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            margin-bottom: 40px;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            text-decoration: none;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: var(--glow);
+        }
+
+        .begin-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
         }
 
         .chapter-list {
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 15px;
+            margin-bottom: 60px;
         }
 
-        .chapter-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-dim);
-            padding: 32px;
-            border-radius: 2px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
-        }
-
-        .chapter-card:hover {
-            border-color: var(--border-bright);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
-        }
-
-        .chapter-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chapter-num {
-            font-family: var(--font-sans);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            text-shadow: var(--glow-soft);
-        }
-
-        .chapter-title {
-            font-family: var(--font-serif);
-            font-size: 1.4rem;
-            color: #ffffff;
-            letter-spacing: 0.05em;
-            font-weight: 400;
-        }
-
-        .btn-read {
-            align-self: flex-start;
+        .chapter-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
             background: transparent;
-            color: #fff;
-            border: 1px solid var(--border-dim);
-            padding: 10px 24px;
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
+            border: 1px solid #222;
+            color: var(--text-color);
             text-decoration: none;
-            cursor: pointer;
+            text-align: center;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
-        .btn-read:hover {
-            border-color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-            color: #ffffff;
+        .chapter-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            box-shadow: var(--glow);
         }
 
-        /* Lore Atmosphere Section */
-        .lore-atmosphere {
-            padding: 80px 0;
+        .ch-num {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #777;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .ch-title {
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .footer {
+            margin-top: auto;
             text-align: center;
-            border-top: 1px solid var(--border-dim);
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            border-top: 1px solid #222;
+            width: 100%;
+            padding-top: 30px;
+            padding-bottom: 20px;
         }
 
-        /* ==========================================================================
-           7. FOOTER
-           ========================================================================== */
-        footer {
-            padding: 60px 0 40px 0;
-            border-top: 1px solid var(--border-dim);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .footer-brand {
-            font-family: var(--font-serif);
-            letter-spacing: 0.2em;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-
-        .footer-motto {
-            font-family: var(--font-serif);
-            font-style: italic;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            list-style: none;
-            margin-bottom: 32px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
+        .footer a {
+            color: #666;
             text-decoration: none;
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            transition: color 0.3s ease;
+            margin: 0 15px;
+            transition: color 0.3s;
         }
 
-        .footer-links a:hover {
-            color: #fff;
-        }
-
-        .copyright {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-        }
-
-        /* ==========================================================================
-           8. ANIMATIONS & SCROLL REVEAL CLASSES
-           ========================================================================== */
-        .reveal-down {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
-            will-change: opacity, transform;
-        }
-
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(-30px);
-            transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
-            will-change: opacity, transform;
-        }
-
-        .reveal-down.is-visible, .reveal-up.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ==========================================================================
-           9. RESPONSIVE DESIGN
-           ========================================================================== */
-        @media (max-width: 768px) {
-            nav.navbar {
-                padding: 16px 20px;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 60px;
-                right: 0;
-                width: 100vw;
-                background: rgba(5, 5, 5, 0.95);
-                backdrop-filter: blur(15px);
-                flex-direction: column;
-                align-items: center;
-                padding: 30px 0;
-                gap: 24px;
-                border-bottom: 1px solid var(--border-dim);
-                display: none;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .opening-title {
-                font-size: 1.6rem;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .chapter-card {
-                padding: 24px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, .reveal-down, .reveal-up, .symbol-core, .logo-container {
-                animation: none !important;
-                transition: none !important;
-                transform: none !important;
-                opacity: 1 !important;
-            }
+        .footer a:hover {
+            color: var(--accent-color);
         }
     </style>
 </head>
 <body>
-
-    <!-- Ambient Lighting Background -->
-    <div class="ambient-bg" aria-hidden="true"></div>
-
-    <!-- Initial Loading Screen -->
-    <div id="loading-screen">
-        <div class="symbol-core">♦</div>
-        <div class="loading-brand">BLACKLIGHTDOMS</div>
-    </div>
-
-    <!-- Global Page Transition Overlay -->
-    <div id="page-transition" aria-hidden="true"></div>
-
-    <!-- ==========================================================================
-       ACT 1: MINIMAL OPENING HERO SCREEN
-       ========================================================================== -->
-    <section id="opening-screen">
-        <div class="logo-container fade-seq-1">
-            <img src="logo.png" alt="BLACKLIGHTDOMS Logo" class="official-logo" onerror="this.style.display='none';">
+    <div class="container">
+        <div class="header">
+            <img src="logo.png" alt="Beyond The Fragment Logo" class="logo">
+            <h1>Beyond The Fragment</h1>
+            <div class="subtitle">A Fictional Novel</div>
+            <div class="symbol">♦</div>
         </div>
 
-        <h1 class="opening-title glow-title fade-seq-2">BLACKLIGHTDOMS</h1>
-        <div class="opening-subtitle fade-seq-3">NOVEL</div>
+        <a href="chapter1.html" class="begin-btn">BEGIN READING</a>
 
-        <p class="opening-quote fade-seq-4">
-            "A story that refused to disappear."
-        </p>
-
-        <div class="opening-symbol fade-seq-4">
-            <span class="symbol-core">♦</span>
-        </div>
-
-        <button class="btn-enter fade-seq-5" id="btnEnterNovel" aria-label="Enter Novel">
-            ENTER THE NOVEL
-        </button>
-    </section>
-
-    <!-- ==========================================================================
-       ACT 2: MAIN NOVEL HOME / CONTENT
-       ========================================================================== -->
-    <div id="main-content">
-        
-        <!-- Navigation -->
-        <nav class="navbar">
-            <a href="#" class="nav-brand">
-                <img src="logo.png" alt="" class="nav-brand-logo" onerror="this.style.display='none';">
-                <span class="nav-brand-text glow-title">BLACKLIGHTDOMS</span>
+        <div class="chapter-list">
+            <a href="chapter1.html" class="chapter-btn">
+                <span class="ch-num">CHAPTER I</span>
+                <span class="ch-title">THE UNSEEN BOY</span>
             </a>
-            <button class="mobile-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation Menu">☰</button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#hero">HOME</a></li>
-                <li><a href="#chapters">CHAPTERS</a></li>
-                <li><a href="#lore">LORE</a></li>
-            </ul>
-        </nav>
-
-        <!-- Continue Reading Bar (Triggered via localStorage) -->
-        <div id="continue-bar">
-            <span id="continueText">You were reading Chapter I</span>
-            <a href="#" id="continueBtn" class="btn-read">CONTINUE READING</a>
+            <a href="chapter2.html" class="chapter-btn">
+                <span class="ch-num">CHAPTER II</span>
+                <span class="ch-title">THE AWAKENING</span>
+            </a>
+            <a href="chapter3.html" class="chapter-btn">
+                <span class="ch-num">CHAPTER III</span>
+                <span class="ch-title">THE VOICE BEYOND DARKNESS</span>
+            </a>
+            <a href="chapter4.html" class="chapter-btn">
+                <span class="ch-num">CHAPTER IV</span>
+                <span class="ch-title">THE CORE</span>
+            </a>
+            <a href="chapter5.html" class="chapter-btn">
+                <span class="ch-num">CHAPTER V</span>
+                <span class="ch-title">THE FIRST PURSUIT</span>
+            </a>
         </div>
 
-        <!-- Novel Hero Section -->
-        <section class="novel-hero reveal-down" id="hero">
-            <h1 class="hero-title glow-title">BLACKLIGHTDOMS</h1>
-            <div class="hero-sub">NOVEL</div>
-            <p class="hero-tagline">"The story begins where no one was looking."</p>
-            <div style="margin-top: 20px;">
-                <span class="symbol-core">♦</span>
-            </div>
-            <div style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--text-muted); margin-top: 12px;">
-                CHAPTERS I — V
-            </div>
-        </section>
-
-        <!-- Introduction -->
-        <section class="intro-section reveal-down">
-            <div class="intro-container">
-                <p class="story-text">
-                    Some stories begin with destiny. Others begin with a choice.<br><br>
-                    Darren Akito’s story begins with something much quieter: a black Fragment hidden beneath the floorboards, an ancient voice in the dark, and a presence that should never have noticed him.
-                </p>
-            </div>
-        </section>
-
-        <!-- Fragment Symbol Feature -->
-        <section class="fragment-feature reveal-down">
-            <div class="symbol-core">♦</div>
-            <h3 class="glow-title">THE FRAGMENT</h3>
-            <p class="story-text" style="max-width: 500px; margin: 0 auto;">
-                A presence without a name.<br>A light hidden inside darkness.
-            </p>
-        </section>
-
-        <!-- Chapter Selection Section -->
-        <section class="chapters-section" id="chapters">
-            <div class="section-header reveal-down">
-                <h2 class="glow-title">THE NOVEL</h2>
-                <div class="symbol-core" style="font-size: 0.9rem;">♦</div>
-            </div>
-
-            <div class="chapter-list">
-
-                <!-- CHAPTER 1 -->
-                <article class="chapter-card reveal-down">
-                    <div class="chapter-meta">
-                        <span class="chapter-num">CHAPTER I</span>
-                        <span class="symbol-core" style="font-size: 0.8rem;">♦</span>
-                    </div>
-                    <h3 class="chapter-title glow-title">THE UNSEEN BOY</h3>
-                    <p class="story-text">
-                        Darren Akito is a boy almost nobody notices. Ignored at school, invisible at home—until he discovers something hidden beneath the floor of his house. A black Fragment. And when he touches it... something notices him.
-                    </p>
-                    <button class="btn-read" onclick="navigateChapter('chapter1.html', 'Chapter I')">READ CHAPTER</button>
-                </article>
-
-                <!-- CHAPTER 2 -->
-                <article class="chapter-card reveal-down">
-                    <div class="chapter-meta">
-                        <span class="chapter-num">CHAPTER II</span>
-                        <span class="symbol-core" style="font-size: 0.8rem;">♦</span>
-                    </div>
-                    <h3 class="chapter-title glow-title">THE AWAKENING</h3>
-                    <p class="story-text">
-                        Something inside Darren has changed. His reflexes, his senses, his body. Damian Charles Whitmore begins to notice that Darren is no longer an easy target. Meanwhile, the Fragment’s presence becomes harder to ignore.
-                    </p>
-                    <button class="btn-read" onclick="navigateChapter('chapter2.html', 'Chapter II')">READ CHAPTER</button>
-                </article>
-
-                <!-- CHAPTER 3 -->
-                <article class="chapter-card reveal-down">
-                    <div class="chapter-meta">
-                        <span class="chapter-num">CHAPTER III</span>
-                        <span class="symbol-core" style="font-size: 0.8rem;">♦</span>
-                    </div>
-                    <h3 class="chapter-title glow-title">THE VOICE BEYOND DARKNESS</h3>
-                    <p class="story-text">
-                        Darren begins hearing something he cannot explain. Inside a strange black void, he encounters Kael Vireon. Kael knows about the Fragment, but he refuses to reveal everything.
-                    </p>
-                    <button class="btn-read" onclick="navigateChapter('chapter3.html', 'Chapter III')">READ CHAPTER</button>
-                </article>
-
-                <!-- CHAPTER 4 -->
-                <article class="chapter-card reveal-down">
-                    <div class="chapter-meta">
-                        <span class="chapter-num">CHAPTER IV</span>
-                        <span class="symbol-core" style="font-size: 0.8rem;">♦</span>
-                    </div>
-                    <h3 class="chapter-title glow-title">THE CORE</h3>
-                    <p class="story-text">
-                        Something deeper begins forming inside Darren. The Fragment was only the beginning. A strange energy takes shape—The Core. But power does not come without consequence.
-                    </p>
-                    <button class="btn-read" onclick="navigateChapter('chapter4.html', 'Chapter IV')">READ CHAPTER</button>
-                </article>
-
-                <!-- CHAPTER 5 -->
-                <article class="chapter-card reveal-down">
-                    <div class="chapter-meta">
-                        <span class="chapter-num">CHAPTER V</span>
-                        <span class="symbol-core" style="font-size: 0.8rem;">♦</span>
-                    </div>
-                    <h3 class="chapter-title glow-title">THE FIRST PURSUIT</h3>
-                    <p class="story-text">
-                        Darren is no longer unnoticed. Someone has found him. What begins as a normal walk home turns into a pursuit. Kael appears with a dire warning: "They have found you."
-                    </p>
-                    <button class="btn-read" onclick="navigateChapter('chapter5.html', 'Chapter V')">READ CHAPTER</button>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- Lore Atmosphere Section -->
-        <section class="lore-atmosphere reveal-down" id="lore">
-            <div class="symbol-core" style="margin-bottom: 16px;">♦</div>
-            <h3 class="glow-title" style="font-family: var(--font-serif); font-size: 1.2rem; letter-spacing: 0.2em; margin-bottom: 16px;">BEYOND THE FRAGMENT</h3>
-            <p class="lore-text" style="max-width: 550px; margin: 0 auto;">
-                "Not every voice belongs to the living.<br>Not every light was meant to be found."
-            </p>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <div class="footer-brand glow-title">BLACKLIGHTDOMS</div>
-            <div class="footer-motto">"United Beyond the Eclipse."</div>
-            
-            <ul class="footer-links">
-                <li><a href="https://whatsapp.com" target="_blank" rel="noopener">WHATSAPP</a></li>
-                <li><a href="https://discord.com" target="_blank" rel="noopener">DISCORD</a></li>
-            </ul>
-
-            <div class="copyright">
-                BLACKLIGHTDOMS © 2026. ALL RIGHTS RESERVED.
-            </div>
-        </footer>
-
+        <div class="footer">
+            <a href="https://discord.gg/r4dM4QFteV" target="_blank">DISCORD</a>
+            <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank">WHATSAPP</a>
+        </div>
     </div>
-
-    <!-- ==========================================================================
-       JAVASCRIPT ENGINE
-       ========================================================================== -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            initLoading();
-            initEnterNovel();
-            initScrollReveal();
-            initMobileMenu();
-            checkReadingProgress();
-        });
-
-        /* 1. Loading Screen Handler */
-        function initLoading() {
-            const loadingScreen = document.getElementById('loading-screen');
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 1000);
-            }, 800);
-        }
-
-        /* 2. Enter Novel Button Handler */
-        function initEnterNovel() {
-            const btnEnter = document.getElementById('btnEnterNovel');
-            const openingScreen = document.getElementById('opening-screen');
-            const mainContent = document.getElementById('main-content');
-            const transitionOverlay = document.getElementById('page-transition');
-
-            btnEnter.addEventListener('click', () => {
-                transitionOverlay.classList.add('active');
-
-                setTimeout(() => {
-                    openingScreen.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    window.scrollTo(0, 0);
-
-                    setTimeout(() => {
-                        transitionOverlay.classList.remove('active');
-                    }, 300);
-                }, 600);
-            });
-        }
-
-        /* 3. Global Chapter Navigation with Page Transition */
-        function navigateChapter(url, chapterName) {
-            // Save progress to LocalStorage
-            localStorage.setItem('blds_last_chapter_url', url);
-            localStorage.setItem('blds_last_chapter_name', chapterName);
-
-            const transitionOverlay = document.getElementById('page-transition');
-            transitionOverlay.classList.add('active');
-
-            setTimeout(() => {
-                window.location.href = url;
-            }, 600);
-        }
-
-        /* 4. Check LocalStorage for Reading Progress */
-        function checkReadingProgress() {
-            const lastUrl = localStorage.getItem('blds_last_chapter_url');
-            const lastName = localStorage.getItem('blds_last_chapter_name');
-
-            if (lastUrl && lastName) {
-                const continueBar = document.getElementById('continue-bar');
-                const continueText = document.getElementById('continueText');
-                const continueBtn = document.getElementById('continueBtn');
-
-                continueText.textContent = `You were reading ${lastName}`;
-                continueBtn.onclick = (e) => {
-                    e.preventDefault();
-                    navigateChapter(lastUrl, lastName);
-                };
-                continueBar.style.display = 'flex';
-            }
-        }
-
-        /* 5. Bidirectional Scroll Reveal Observer */
-        function initScrollReveal() {
-            let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px 0px -10% 0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const isScrollingDown = currentScrollTop > lastScrollTop;
-                lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
-
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    } else {
-                        // Subtly remove to allow re-reveal on scroll up
-                        if (entry.boundingClientRect.top > window.innerHeight) {
-                            entry.target.classList.remove('is-visible');
-                        }
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.reveal-down, .reveal-up').forEach(el => observer.observe(el));
-        }
-
-        /* 6. Mobile Menu Handler */
-        function initMobileMenu() {
-            const toggle = document.getElementById('mobileMenuToggle');
-            const links = document.getElementById('navLinks');
-
-            toggle.addEventListener('click', () => {
-                links.classList.toggle('active');
-            });
-
-            // Close mobile menu on click
-            links.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    links.classList.remove('active');
-                });
-            });
-        }
-    </script>
 </body>
 </html>
