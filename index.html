@@ -1,502 +1,1453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BLDS - BLACKLIGHTDOMS</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Times New Roman",serif;
-}
-
-body{
-background:#000;
-color:#fff;
-overflow-x:hidden;
-
-text-shadow:
-0 0 4px rgba(255,255,255,.5),
-0 0 8px rgba(255,255,255,.25);
-}
-
-.container{
-    width:100%;
-    max-width:700px;
-    min-height:100vh;
-
-    margin:auto;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    padding:30px 20px 50px;
-}
-
-/* ========================= */
-/* LOGO */
-/* ========================= */
-
-.logo{
-width:150px;
-margin-top:25px;
-
-animation:float 4s ease-in-out infinite;
-
-filter:
-drop-shadow(0 0 4px rgba(255,255,255,.35))
-drop-shadow(0 0 8px rgba(255,255,255,.25));
-}
-
-@keyframes float{
-
-0%{
-transform:translateY(0px);
-}
-
-50%{
-transform:translateY(-12px);
-}
-
-100%{
-transform:translateY(0px);
-}
-
-}
-
-.title{
-margin-top:18px;
-
-font-size:28px;
-font-weight:600;
-
-letter-spacing:3px;
-text-align:center;
-
-text-shadow:
-0 0 6px rgba(255,255,255,.9),
-0 0 12px rgba(255,255,255,.5),
-0 0 25px rgba(255,255,255,.2);
-}
-
-/* ========================= */
-/* CHAPTER */
-/* ========================= */
-
-.chapter-list{
-width:100%;
-max-width:320px;
-
-margin-top:50px;
-}
-
-.chapter{
-margin-bottom:16px;
-}
-
-.chapter-btn{
-
-width:100%;
-
-padding:12px;
-
-font-size:15px;
-letter-spacing:2px;
-
-color:white;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.15);
-
-cursor:pointer;
-
-transition:.35s;
-
-backdrop-filter:blur(8px);
-
-text-shadow:
-0 0 5px rgba(255,255,255,.2);
-
-}
-
-.chapter-btn:hover{
-
-transform:translateY(-2px);
-
-background:
-rgba(255,255,255,.08);
-
-border-color:
-rgba(255,255,255,.4);
-
-box-shadow:
-0 0 8px rgba(255,255,255,.2);
-
-}
-
-.coming{
-
-margin-top:4px;
-
-font-size:10px;
-
-letter-spacing:3px;
-
-opacity:.45;
-
-text-align:center;
-
-}
-
-/* ========================= */
-/* FOOTER */
-/* ========================= */
-
-.footer{
-
-margin-top:70px;
-
-text-align:center;
-
-}
-
-.social{
-
-margin:12px 0;
-
-}
-
-.social a{
-
-color:white;
-
-text-decoration:none;
-
-font-size:13px;
-
-opacity:.8;
-
-transition:.3s;
-
-}
-
-.social a:hover{
-
-opacity:1;
-
-text-shadow:
-0 0 8px rgba(255,255,255,.5);
-
-}
-
-.copyright{
-
-margin-top:35px;
-
-font-size:11px;
-
-letter-spacing:2px;
-
-opacity:.45;
-
-}
-
-/* ========================= */
-/* TRANSITION */
-/* ========================= */
-
-#transition{
-
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:black;
-
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-
-opacity:0;
-pointer-events:none;
-
-transition:1s;
-
-z-index:9999;
-
-}
-
-#transition.active{
-
-opacity:1;
-pointer-events:all;
-
-}
-
-.loading{
-
-font-size:15px;
-
-letter-spacing:5px;
-
-text-shadow:
-0 0 6px rgba(255,255,255,.3);
-
-animation:pulse 2s infinite;
-
-}
-
-@keyframes pulse{
-
-0%{
-opacity:.25;
-}
-
-50%{
-opacity:1;
-}
-
-100%{
-opacity:.25;
-}
-
-}
-
-.light-line{
-
-width:180px;
-height:1px;
-
-background:white;
-
-margin-top:15px;
-
-box-shadow:
-0 0 10px white;
-
-animation:lineGlow 2s infinite;
-
-}
-
-@keyframes lineGlow{
-
-0%{
-opacity:.2;
-}
-
-50%{
-opacity:1;
-}
-
-100%{
-opacity:.2;
-}
-
-}
-
-.subtitle{
-
-margin-top:8px;
-
-font-size:13px;
-
-letter-spacing:8px;
-
-opacity:.55;
-
-text-transform:uppercase;
-
-text-align:center;
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLACKLIGHTDOMINIONS — Novel</title>
+    <meta name="description" content="BLACKLIGHTDOMINIONS Novel — A dark mystery story of Darren Akito, the Fragment, and the secrets beyond the darkness.">
+    <meta name="theme-color" content="#050505">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="BLACKLIGHTDOMINIONS — Novel">
+    <meta property="og:description" content="A dark mystery story of Darren Akito, the Fragment, and the secrets beyond the darkness.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="logo.png">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg: #050505;
+            --surface: #0b0b0b;
+            --surface-2: #121212;
+            --text: #f5f5f5;
+            --muted: #888888;
+            --border: rgba(255, 255, 255, 0.12);
+            --border-hover: rgba(255, 255, 255, 0.35);
+            --white: #ffffff;
+            --glow: rgba(255, 255, 255, 0.08);
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-ui);
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+            line-height: 1.6;
+            background: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Ambient Radial Gradient Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.035), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Subtle Grain Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- ACCESSIBILITY & UTILITIES --- */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        /* --- SCROLL PROGRESS BAR --- */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--white);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        /* --- INITIAL LOADING SCREEN --- */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s var(--ease-out), visibility 0.8s;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .loader-logo-img {
+            max-width: 180px;
+            height: auto;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 12px rgba(255,255,255,0.1));
+        }
+
+        .loader-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .loader-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-top: -8px;
+        }
+
+        .loader-bar-container {
+            width: 120px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            margin-top: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            animation: loadingAnim 1.2s infinite var(--ease-out);
+        }
+
+        @keyframes loadingAnim {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            z-index: 100;
+            transition: background 0.3s ease, border-bottom 0.3s ease, backdrop-filter 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-brand-title {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .nav-brand-sub {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--white);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 24px;
+            height: 18px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 102;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 1px;
+            background: var(--white);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(16px);
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            letter-spacing: 0.2em;
+            color: var(--text);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--white);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+            padding-bottom: 60px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: floatParticle 12s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+        }
+
+        .hero-logo-wrapper {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .hero-logo-img {
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
+        }
+
+        .hero-logo-fallback {
+            font-family: var(--font-heading);
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            letter-spacing: 0.25em;
+            font-weight: 400;
+            color: var(--white);
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-sublabel {
+            font-size: 0.75rem;
+            letter-spacing: 0.5em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .hero-motto {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+        }
+
+        .hero-teaser {
+            font-size: 1rem;
+            color: #ccc;
+            max-width: 540px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.3s var(--ease-out);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-primary:hover {
+            background: var(--white);
+            color: #000000;
+            border-color: var(--white);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-secondary:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .scroll-arrow {
+            width: 1px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--muted), transparent);
+            animation: scrollPulse 2s infinite;
+        }
+
+        @keyframes scrollPulse {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            50.1% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* --- SECTION BASE STYLES --- */
+        section {
+            padding: 100px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+        }
+
+        .section-number {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            letter-spacing: 0.15em;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+            margin: 40px 0;
+        }
+
+        /* --- INTRODUCTION SECTION --- */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .intro-body p {
+            color: #b0b0b0;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .intro-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- QUOTE SECTION --- */
+        .quote-section {
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .quote-text {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.05em;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* --- READING PROGRESS SECTION --- */
+        .reading-progress-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .progress-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .progress-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .progress-title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            color: var(--white);
+        }
+
+        /* --- CHAPTERS SECTION --- */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .chapter-card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s var(--ease-out);
+            overflow: hidden;
+        }
+
+        .chapter-card:hover {
+            background: var(--surface-2);
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .chapter-bg-num {
+            position: absolute;
+            top: -10px;
+            right: 16px;
+            font-family: var(--font-heading);
+            font-size: 5.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .chapter-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .chapter-num {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .chapter-status {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #aaa;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chapter-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--white);
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        .chapter-desc {
+            font-size: 0.875rem;
+            color: #999999;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        .chapter-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white);
+            transition: gap 0.3s ease;
+        }
+
+        .chapter-card:hover .chapter-link {
+            gap: 14px;
+        }
+
+        /* --- LORE / FRAGMENT SECTION --- */
+        .lore-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .fragment-wrapper {
+            margin: 40px 0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .fragment-object {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ffffff 0%, #111111 100%);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+            animation: fragmentPulse 4s infinite ease-in-out;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .fragment-wrapper:hover .fragment-object {
+            transform: scale(1.15) rotate(45deg);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.35);
+        }
+
+        @keyframes fragmentPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+            50% { transform: scale(1.05) rotate(5deg); opacity: 1; }
+        }
+
+        .fragment-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .fragment-whisper {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            min-height: 1.5em;
+            transition: opacity 0.5s ease;
+        }
+
+        .lore-keywords {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .lore-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* --- FINAL CTA SECTION --- */
+        .final-cta {
+            text-align: center;
+            padding: 120px 0 80px 0;
+        }
+
+        .cta-title {
+            font-family: var(--font-heading);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            letter-spacing: 0.15em;
+            color: var(--white);
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .cta-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 32px;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 0;
+            background: #020202;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: #777;
+        }
+
+        .footer-sub {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .footer-link {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--white);
+        }
+
+        /* --- BACK TO TOP BUTTON --- */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: #000000;
+            border: 1px solid var(--border);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+            z-index: 90;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-to-top:hover {
+            border-color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* --- PAGE TRANSITION OVERLAY --- */
+        #page-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        #page-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- SCROLL REVEAL ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MEDIA QUERIES (RESPONSIVE) --- */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .intro-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .reading-progress-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .chapter-card {
+                padding: 24px;
+            }
+
+            .chapter-bg-num {
+                font-size: 4rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            .hero-logo-img {
+                max-width: 240px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .chapters-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
+        /* --- REDUCED MOTION --- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+            .particle {
+                display: none;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="transition">
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
 
-<div class="loading">
-LOADING CHAPTER I
-</div>
+    <!-- Page Transition Overlay -->
+    <div id="page-overlay"></div>
 
-<div class="light-line"></div>
+    <!-- Grain Texture -->
+    <div class="grain-overlay"></div>
 
-</div>
+    <!-- Initial Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <img src="logo.png" alt="BLACKLIGHTDOMINIONS" class="loader-logo-img" onerror="this.style.display='none'; document.getElementById('loader-fallback').style.display='block';">
+            <div id="loader-fallback" style="display: none;">
+                <div class="loader-title">BLACKLIGHTDOMINIONS</div>
+            </div>
+            <div class="loader-subtitle">NOVEL</div>
+            <div class="loader-bar-container">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
 
-<div class="container">
+    <!-- Navigation Header -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="nav-brand">
+                <div class="nav-brand-text">
+                    <span class="nav-brand-title">BLACKLIGHTDOMINIONS</span>
+                    <span class="nav-brand-sub">NOVEL</span>
+                </div>
+            </a>
 
-<img src="logo.png" class="logo">
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#intro" class="nav-link">THE NOVEL</a></li>
+                    <li><a href="#chapters" class="nav-link">CHAPTERS</a></li>
+                    <li><a href="https://discord.gg" target="_blank" rel="noopener" class="nav-link">DISCORD</a></li>
+                </ul>
+            </nav>
 
-<div class="title">
-BLACKLIGHTDOMS
-</div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
 
-<div class="subtitle">
-Novel
-</div>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#" class="mobile-nav-link">HOME</a>
+        <a href="#intro" class="mobile-nav-link">THE NOVEL</a>
+        <a href="#chapters" class="mobile-nav-link">CHAPTERS</a>
+        <a href="https://discord.gg" target="_blank" rel="noopener" class="mobile-nav-link">DISCORD</a>
+    </div>
 
-<div class="chapter-list">
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-particles" id="hero-particles"></div>
+            
+            <div class="container hero-content">
+                <div class="hero-logo-wrapper">
+                    <img src="logo.png" alt="BLACKLIGHTDOMINIONS" class="hero-logo-img" onerror="this.style.display='none'; document.getElementById('hero-fallback').style.display='block';">
+                    <div id="hero-fallback" class="hero-logo-fallback" style="display: none;">
+                        BLACKLIGHTDOMINIONS
+                    </div>
+                </div>
 
-<div class="chapter">
-<button class="chapter-btn" onclick="openChapter1()">
-CHAPTER 1
-</button>
-</div>
+                <div class="hero-sublabel">NOVEL</div>
+                <div class="hero-motto">"United Beyond the Eclipse"</div>
 
-<div class="chapter">
-<button class="chapter-btn" onclick="openChapter2()">
-CHAPTER 2
-</button>
-</div>
+                <p class="hero-teaser">
+                    A story of fragments, shadows, and the things that should have remained forgotten.
+                </p>
 
-<div class="chapter">
-<button class="chapter-btn" onclick="openChapter3()">
-CHAPTER 3
-</button>
-</div>
+                <div class="hero-cta-group">
+                    <a href="chapter1.html" class="btn btn-primary page-link">BEGIN READING</a>
+                    <a href="#chapters" class="btn btn-secondary">VIEW CHAPTERS</a>
+                </div>
+            </div>
 
-<div class="chapter">
-<button class="chapter-btn" onclick="openChapter4()">
-CHAPTER 4
-</button>
-</div>
+            <div class="scroll-indicator" id="scroll-to-intro">
+                <span>SCROLL TO EXPLORE</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </section>
 
-<div class="chapter">
-<button class="chapter-btn" onclick="openChapter5()">
-CHAPTER 5
-</button>
-</div>
+        <!-- Introduction Section -->
+        <section id="intro">
+            <div class="container">
+                <div class="intro-grid">
+                    <div class="section-header reveal">
+                        <span class="section-number">01</span>
+                        <h2 class="section-title">THE NOVEL</h2>
+                    </div>
 
-<div class="footer">
+                    <div class="intro-body reveal">
+                        <p>
+                            Darren Akito is a boy living in the quiet shadows of everyday life—unnoticed, uncomplicated, and largely forgotten by those around him.
+                        </p>
+                        <p>
+                            That delicate balance fractures when a mysterious Fragment, hidden beneath his home, surfaces from the unknown. It was never meant to be touched, nor was it meant to awaken.
+                        </p>
+                        <p>
+                            As subtle shifts begin to take root within him, Darren realizes that disturbing the silence comes with a cost: once you step into the dark, something in the dark begins to look back.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="social">
-<a href="https://discord.gg/r4dM4QFteV" target="_blank">
-Discord Server
-</a>
-</div>
+        <!-- Story Quote -->
+        <section class="quote-section">
+            <div class="container">
+                <div class="divider"></div>
+                <blockquote class="quote-text reveal">
+                    "Some things are not meant to be found."
+                </blockquote>
+                <div class="divider"></div>
+            </div>
+        </section>
 
-<div class="social">
-<a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank">
-WhatsApp Community
-</a>
-</div>
+        <!-- Chapters Section -->
+        <section id="chapters">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-number">02</span>
+                    <h2 class="section-title">CHAPTERS</h2>
+                </div>
 
-<div class="copyright">
-BLACKLIGHTDOMS©2026
-</div>
+                <!-- Dynamic Reading Progress Widget -->
+                <div id="reading-progress-container" class="reveal">
+                    <div class="reading-progress-card">
+                        <div class="progress-info">
+                            <span class="progress-label" id="progress-status-label">YOUR READING</span>
+                            <div class="progress-title" id="progress-title-text">Start the Story</div>
+                        </div>
+                        <a href="chapter1.html" id="progress-cta-btn" class="btn btn-primary page-link">BEGIN CHAPTER I &rarr;</a>
+                    </div>
+                </div>
 
-</div>
+                <!-- Chapters Grid -->
+                <div class="chapters-grid">
+                    
+                    <!-- Chapter 1 -->
+                    <article class="chapter-card reveal">
+                        <span class="chapter-bg-num">01</span>
+                        <div class="chapter-meta">
+                            <span class="chapter-num">CHAPTER I</span>
+                            <span class="chapter-status">AVAILABLE</span>
+                        </div>
+                        <h3 class="chapter-title">THE UNSEEN BOY</h3>
+                        <p class="chapter-desc">
+                            Darren's ordinary life begins to fracture when he discovers a mysterious Fragment hidden beneath his home.
+                        </p>
+                        <a href="chapter1.html" class="chapter-link page-link">
+                            <span>READ CHAPTER</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </article>
 
-</div>
+                    <!-- Chapter 2 -->
+                    <article class="chapter-card reveal">
+                        <span class="chapter-bg-num">02</span>
+                        <div class="chapter-meta">
+                            <span class="chapter-num">CHAPTER II</span>
+                            <span class="chapter-status">AVAILABLE</span>
+                        </div>
+                        <h3 class="chapter-title">THE AWAKENING</h3>
+                        <p class="chapter-desc">
+                            Something inside Darren has changed. At first, the difference is almost impossible to notice.
+                        </p>
+                        <a href="chapter2.html" class="chapter-link page-link">
+                            <span>READ CHAPTER</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </article>
 
-<script>
+                    <!-- Chapter 3 -->
+                    <article class="chapter-card reveal">
+                        <span class="chapter-bg-num">03</span>
+                        <div class="chapter-meta">
+                            <span class="chapter-num">CHAPTER III</span>
+                            <span class="chapter-status">AVAILABLE</span>
+                        </div>
+                        <h3 class="chapter-title">THE VOICE BEYOND DARKNESS</h3>
+                        <p class="chapter-desc">
+                            In a place beyond the waking world, Darren encounters a presence that knows more about him than it should.
+                        </p>
+                        <a href="chapter3.html" class="chapter-link page-link">
+                            <span>READ CHAPTER</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </article>
 
-function openChapter1(){
+                    <!-- Chapter 4 -->
+                    <article class="chapter-card reveal">
+                        <span class="chapter-bg-num">04</span>
+                        <div class="chapter-meta">
+                            <span class="chapter-num">CHAPTER IV</span>
+                            <span class="chapter-status">AVAILABLE</span>
+                        </div>
+                        <h3 class="chapter-title">THE CORE</h3>
+                        <p class="chapter-desc">
+                            The changes within Darren begin to take shape, revealing that the Fragment may be connected to something deeper.
+                        </p>
+                        <a href="chapter4.html" class="chapter-link page-link">
+                            <span>READ CHAPTER</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </article>
 
-const transition =
-document.getElementById("transition");
+                    <!-- Chapter 5 -->
+                    <article class="chapter-card reveal">
+                        <span class="chapter-bg-num">05</span>
+                        <div class="chapter-meta">
+                            <span class="chapter-num">CHAPTER V</span>
+                            <span class="chapter-status">AVAILABLE</span>
+                        </div>
+                        <h3 class="chapter-title">THE FIRST PURSUIT</h3>
+                        <p class="chapter-desc">
+                            When the Fragment's trace is discovered, Darren is no longer the only one searching for answers.
+                        </p>
+                        <a href="chapter5.html" class="chapter-link page-link">
+                            <span>READ CHAPTER</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </article>
 
-transition.classList.add("active");
+                </div>
+            </div>
+        </section>
 
-setTimeout(()=>{
+        <!-- Lore Teaser / Fragment Section -->
+        <section id="lore">
+            <div class="container lore-container reveal">
+                <span class="section-number">03</span>
+                <h2 class="section-title">THE UNKNOWN</h2>
 
-window.location.href="chapter1.html";
+                <div class="fragment-wrapper" id="fragment-trigger">
+                    <div class="fragment-object"></div>
+                    <span class="fragment-label">THE FRAGMENT</span>
+                    <div class="fragment-whisper" id="fragment-whisper"></div>
+                </div>
 
-},1800);
+                <div class="lore-keywords">
+                    <span class="lore-tag">THE FRAGMENT</span>
+                    <span class="lore-tag">&bull;</span>
+                    <span class="lore-tag">THE CORE</span>
+                    <span class="lore-tag">&bull;</span>
+                    <span class="lore-tag">THE VOICE</span>
+                    <span class="lore-tag">&bull;</span>
+                    <span class="lore-tag">THE PURSUIT</span>
+                </div>
+            </div>
+        </section>
 
-}
+        <!-- Final CTA Section -->
+        <section class="final-cta">
+            <div class="container reveal">
+                <h2 class="cta-title">THE STORY HAS ONLY JUST BEGUN.</h2>
+                <p class="cta-desc">Five chapters. One Fragment. And a mystery that refuses to remain buried.</p>
+                <a href="chapter1.html" class="btn btn-primary page-link">BEGIN CHAPTER I</a>
+            </div>
+        </section>
+    </main>
 
-function openChapter2(){
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <span class="footer-copy">BLACKLIGHTDOMS&copy;2026</span>
+                <span class="footer-sub">NOVEL</span>
+            </div>
 
-const transition =
-document.getElementById("transition");
+            <div class="footer-links">
+                <a href="https://wa.me/" target="_blank" rel="noopener" class="footer-link">WHATSAPP</a>
+                <a href="https://discord.gg" target="_blank" rel="noopener" class="footer-link">DISCORD</a>
+                <a href="#hero" class="footer-link">BACK TO TOP</a>
+            </div>
+        </div>
+    </footer>
 
-transition.classList.add("active");
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">&uarr;</button>
 
-document.querySelector(".loading").innerText =
-"LOADING CHAPTER II";
+    <!-- Vanilla JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* --- 1. INITIAL LOADING SCREEN --- */
+            const loadingScreen = document.getElementById('loading-screen');
+            const hasVisited = sessionStorage.getItem('blds_visited');
+            const duration = hasVisited ? 600 : 1200;
 
-setTimeout(()=>{
+            setTimeout(() => {
+                loadingScreen.classList.add('fade-out');
+                sessionStorage.setItem('blds_visited', 'true');
+            }, duration);
 
-window.location.href="chapter2.html";
+            /* --- 2. HERO PARTICLES GENERATOR --- */
+            const particlesContainer = document.getElementById('hero-particles');
+            const particleCount = window.innerWidth < 768 ? 12 : 25;
 
-},1800);
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 12}s`;
+                particle.style.animationDuration = `${8 + Math.random() * 8}s`;
+                particle.style.opacity = `${0.2 + Math.random() * 0.5}`;
+                particlesContainer.appendChild(particle);
+            }
 
-}
+            /* --- 3. NAVBAR & SCROLL PROGRESS --- */
+            const navbar = document.getElementById('navbar');
+            const scrollProgress = document.getElementById('scroll-progress');
+            const backToTopBtn = document.getElementById('back-to-top');
 
-function openChapter3(){
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                
+                // Scroll progress bar
+                if (docHeight > 0) {
+                    const progress = (scrollTop / docHeight) * 100;
+                    scrollProgress.style.width = `${progress}%`;
+                }
 
-const transition =
-document.getElementById("transition");
+                // Navbar sticky background
+                if (scrollTop > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
 
-transition.classList.add("active");
+                // Back to Top visibility
+                if (scrollTop > 500) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            }, { passive: true });
 
-document.querySelector(".loading").innerText =
-"LOADING CHAPTER III";
+            /* --- 4. MOBILE MENU --- */
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
-setTimeout(()=>{
+            function toggleMobileMenu(open) {
+                const isOpen = open !== undefined ? open : !mobileMenu.classList.contains('active');
+                hamburger.classList.toggle('active', isOpen);
+                mobileMenu.classList.toggle('active', isOpen);
+                document.body.style.overflow = isOpen ? 'hidden' : '';
+            }
 
-window.location.href="chapter3.html";
+            hamburger.addEventListener('click', () => toggleMobileMenu());
 
-},1800);
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => toggleMobileMenu(false));
+            });
 
-}
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    toggleMobileMenu(false);
+                }
+            });
 
-function openChapter4(){
+            /* --- 5. SMOOTH SCROLL FOR INTERNAL LINKS --- */
+            document.getElementById('scroll-to-intro').addEventListener('click', () => {
+                document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
+            });
 
-const transition =
-document.getElementById("transition");
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
 
-transition.classList.add("active");
+            /* --- 6. SCROLL REVEAL (INTERSECTION OBSERVER) --- */
+            const reveals = document.querySelectorAll('.reveal');
+            
+            if ('IntersectionObserver' in window) {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
 
-document.querySelector(".loading").innerText =
-"LOADING CHAPTER IV";
+                const revealObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
 
-setTimeout(()=>{
+                reveals.forEach(el => revealObserver.observe(el));
+            } else {
+                // Fallback for older browsers
+                reveals.forEach(el => el.classList.add('active'));
+            }
 
-window.location.href="chapter4.html";
+            /* --- 7. READING PROGRESS (LOCALSTORAGE) --- */
+            const progressTitleText = document.getElementById('progress-title-text');
+            const progressStatusLabel = document.getElementById('progress-status-label');
+            const progressCtaBtn = document.getElementById('progress-cta-btn');
 
-},1800);
+            try {
+                const savedProgress = localStorage.getItem('bldsNovelProgress');
+                if (savedProgress) {
+                    const data = JSON.parse(savedProgress);
+                    if (data && data.lastChapter) {
+                        if (data.lastChapter === 5 || data.lastChapter === '5') {
+                            progressStatusLabel.textContent = 'STORY ARC COMPLETE';
+                            progressTitleText.textContent = 'Chapter V — The First Pursuit';
+                            progressCtaBtn.textContent = 'READ AGAIN';
+                            progressCtaBtn.setAttribute('href', 'chapter1.html');
+                        } else {
+                            const nextChap = parseInt(data.lastChapter, 10) || 1;
+                            progressStatusLabel.textContent = 'LAST READ';
+                            progressTitleText.textContent = data.lastChapterTitle || `Chapter ${nextChap}`;
+                            progressCtaBtn.textContent = 'CONTINUE READING →';
+                            progressCtaBtn.setAttribute('href', `chapter${nextChap}.html`);
+                        }
+                    }
+                }
+            } catch (e) {
+                // Fallback graceful handling if localStorage fails
+                console.warn('LocalStorage unavailable:', e);
+            }
 
-}
+            /* --- 8. INTERACTIVE FRAGMENT --- */
+            const fragmentTrigger = document.getElementById('fragment-trigger');
+            const fragmentWhisper = document.getElementById('fragment-whisper');
+            
+            const whispers = [
+                "Something is listening.",
+                "It was never truly silent.",
+                "The shadows remember.",
+                "A whisper from beyond the core."
+            ];
+            let whisperIndex = 0;
 
-function openChapter5(){
+            fragmentTrigger.addEventListener('click', () => {
+                fragmentWhisper.style.opacity = '0';
+                setTimeout(() => {
+                    fragmentWhisper.textContent = whispers[whisperIndex];
+                    fragmentWhisper.style.opacity = '1';
+                    whisperIndex = (whisperIndex + 1) % whispers.length;
+                }, 200);
+            });
 
-const transition =
-document.getElementById("transition");
+            /* --- 9. PAGE TRANSITION ENHANCEMENT --- */
+            const pageOverlay = document.getElementById('page-overlay');
+            const pageLinks = document.querySelectorAll('.page-link');
 
-transition.classList.add("active");
+            pageLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetUrl = link.getAttribute('href');
+                    if (targetUrl && !targetUrl.startsWith('#') && !targetUrl.startsWith('http')) {
+                        e.preventDefault();
+                        pageOverlay.classList.add('active');
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 350);
+                    }
+                });
+            });
 
-document.querySelector(".loading").innerText =
-"LOADING CHAPTER V";
-
-setTimeout(()=>{
-
-window.location.href="chapter5.html";
-
-},1800);
-
-}
-
-</script>
-
+        });
+    </script>
 </body>
 </html>
