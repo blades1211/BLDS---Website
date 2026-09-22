@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond The Fragment — Digital Novel</title>
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-card: #0c0c0c;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --accent-white: #ffffff;
+            --glow-white: rgba(255, 255, 255, 0.35);
+            --glow-soft: rgba(255, 255, 255, 0.12);
+            --border-subtle: #1f1f1f;
+            --font-title: "Helvetica Neue", Arial, sans-serif;
+            --font-body: "Georgia", "Times New Roman", serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient subtle radial background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --------------------------------------------------
+           PROGRESS BAR
+        -------------------------------------------------- */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background-color: var(--accent-white);
+            box-shadow: 0 0 8px var(--accent-white);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* --------------------------------------------------
+           TRANSITION OVERLAYS
+        -------------------------------------------------- */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .flash-overlay.active {
+            opacity: 1;
+        }
+
+        /* --------------------------------------------------
+           ANIMATED FRAGMENT STAGE OVERLAY
+        -------------------------------------------------- */
+        .fragment-stage-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 800;
+        }
+
+        .fragment-animated-symbol {
+            display: none;
+            color: var(--accent-white);
+            font-size: 36px;
+            transform-origin: center center;
+            will-change: transform, filter, opacity;
+        }
+
+        /* STEP 2: Impact from front to center */
+        .stage-impact {
+            display: block;
+            animation: fragmentImpact 0.6s cubic-bezier(0.11, 0.85, 0.3, 1) forwards;
+        }
+
+        @keyframes fragmentImpact {
+            0% {
+                transform: scale(8) translateZ(0);
+                filter: blur(12px) drop-shadow(0 0 50px rgba(255, 255, 255, 0.9));
+                opacity: 0;
+            }
+            70% {
+                transform: scale(0.9) translateZ(0);
+                filter: blur(0px) drop-shadow(0 0 25px rgba(255, 255, 255, 0.8));
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) translateZ(0);
+                filter: blur(0px) drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+                opacity: 1;
+            }
+        }
+
+        /* STEP 3: Slow Heartbeat Pulse (~3s) */
+        .stage-pulse {
+            display: block;
+            animation: fragmentHeartbeat 3s ease-in-out infinite;
+        }
+
+        @keyframes fragmentHeartbeat {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            }
+            15% {
+                transform: scale(1.25);
+                filter: drop-shadow(0 0 35px rgba(255,255,255,0.85));
+            }
+            28% {
+                transform: scale(1.02);
+                filter: drop-shadow(0 0 18px rgba(255,255,255,0.5));
+            }
+            42% {
+                transform: scale(1.3);
+                filter: drop-shadow(0 0 45px rgba(255,255,255,0.95));
+            }
+            60% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            }
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            }
+        }
+
+        /* STEP 4: Expand & Grow */
+        .stage-grow {
+            display: block;
+            animation: fragmentGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fragmentGrow {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+                opacity: 1;
+            }
+            100% {
+                transform: scale(25);
+                filter: drop-shadow(0 0 120px rgba(255,255,255,1));
+                opacity: 0.95;
+            }
+        }
+
+        /* --------------------------------------------------
+           CINEMATIC LANDING SCREEN
+        -------------------------------------------------- */
+        #intro-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .intro-logo {
+            max-width: 100px;
+            height: auto;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 0 12px var(--glow-white));
+            animation: logoPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoPulse {
+            0% { opacity: 0.8; filter: drop-shadow(0 0 8px rgba(255,255,255,0.2)); }
+            100% { opacity: 1; filter: drop-shadow(0 0 18px rgba(255,255,255,0.5)); }
+        }
+
+        .intro-title {
+            font-family: var(--font-title);
+            font-size: clamp(22px, 5vw, 34px);
+            font-weight: 300;
+            letter-spacing: 7px;
+            color: var(--accent-white);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px var(--glow-white);
+        }
+
+        .intro-subtitle {
+            font-family: var(--font-title);
+            font-size: clamp(10px, 2.5vw, 12px);
+            letter-spacing: 5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .intro-symbol {
+            font-size: 28px;
+            color: var(--accent-white);
+            margin-bottom: 48px;
+            text-shadow: 0 0 12px var(--glow-white);
+        }
+
+        .enter-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--accent-white);
+            padding: 16px 36px;
+            font-family: var(--font-title);
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+
+        .enter-btn:hover {
+            border-color: var(--accent-white);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .enter-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* --------------------------------------------------
+           MAIN APPLICATION LAYOUT (HIDDEN INITIALLY)
+        -------------------------------------------------- */
+        #app-content {
+            display: none;
+            position: relative;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #app-content.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .wrapper {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --------------------------------------------------
+           STICKY HEADER & NAVIGATION
+        -------------------------------------------------- */
+        .nav-header {
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-title);
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent-white);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 20px;
+            height: auto;
+            filter: drop-shadow(0 0 5px var(--glow-white));
+        }
+
+        .chapter-nav {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: var(--font-title);
+            font-size: 11px;
+            letter-spacing: 2px;
+            padding: 4px 8px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-white);
+            text-shadow: 0 0 8px var(--glow-white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --------------------------------------------------
+           LORE PROLOGUE SECTION
+        -------------------------------------------------- */
+        .lore-section {
+            padding: 90px 0 60px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 60px;
+        }
+
+        .lore-card {
+            text-align: center;
+        }
+
+        .symbol-divider {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+        }
+
+        .lore-title {
+            font-family: var(--font-title);
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .lore-text {
+            font-size: clamp(16px, 3.8vw, 18px);
+            line-height: 1.95;
+            color: #d2d2d2;
+            text-align: justify;
+            text-justify: inter-word;
+            margin-bottom: 24px;
+        }
+
+        .lore-quote {
+            text-align: center;
+            font-style: italic;
+            color: var(--accent-white);
+            margin: 40px 0;
+            font-size: clamp(17px, 4vw, 20px);
+            line-height: 1.7;
+            padding: 0 16px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* --------------------------------------------------
+           NOVEL PROSE SECTIONS
+        -------------------------------------------------- */
+        .story-container {
+            padding-bottom: 100px;
+        }
+
+        .chapter-section {
+            padding: 60px 0 80px 0;
+            border-bottom: 1px solid #141414;
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .chapter-number {
+            font-family: var(--font-title);
+            font-size: 11px;
+            letter-spacing: 6px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .chapter-title {
+            font-family: var(--font-title);
+            font-size: clamp(20px, 4.5vw, 28px);
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: var(--accent-white);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .prose {
+            font-size: clamp(16px, 3.8vw, 18.5px);
+            line-height: 1.9;
+            color: #d8d8d8;
+            text-align: justify;
+            text-justify: inter-word;
+            hyphens: auto;
+        }
+
+        .prose p {
+            margin-bottom: 26px;
+            text-indent: 1.5em;
+        }
+
+        .prose p.no-indent {
+            text-indent: 0;
+        }
+
+        .prose em {
+            font-style: italic;
+            color: #ffffff;
+        }
+
+        .prose strong {
+            font-weight: 400;
+            color: var(--accent-white);
+        }
+
+        .dialogue {
+            color: #ffffff;
+        }
+
+        .special-effect-block {
+            text-align: center;
+            margin: 40px 0;
+            padding: 20px;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+            font-style: italic;
+            color: #e5e5e5;
+        }
+
+        /* --------------------------------------------------
+           SCROLL REVEAL ANIMATION
+        -------------------------------------------------- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            filter: blur(2px);
+            transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+            will-change: opacity, transform, filter;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0px);
+        }
+
+        /* --------------------------------------------------
+           BACK TO TOP BUTTON
+        -------------------------------------------------- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            background: rgba(12, 12, 12, 0.85);
+            border: 1px solid var(--border-subtle);
+            color: var(--accent-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 200;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            border-color: var(--accent-white);
+            box-shadow: 0 0 12px var(--glow-white);
+            transform: translateY(-2px);
+        }
+
+        /* --------------------------------------------------
+           FOOTER
+        -------------------------------------------------- */
+        .site-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 50px 0 60px 0;
+            text-align: center;
+            font-family: var(--font-title);
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .footer-logo {
+            width: 24px;
+            height: auto;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 6px var(--glow-white));
+        }
+
+        .footer-title {
+            color: var(--accent-white);
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-white);
+            text-shadow: 0 0 8px var(--glow-white);
+        }
+
+        /* --------------------------------------------------
+           RESPONSIVE ADJUSTMENTS
+        -------------------------------------------------- */
+        @media (max-width: 600px) {
+            .wrapper {
+                padding: 0 18px;
+            }
+
+            .nav-header {
+                padding: 12px 16px;
+            }
+
+            .nav-brand span {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+
+            .chapter-nav {
+                gap: 6px;
+            }
+
+            .nav-link {
+                padding: 4px 6px;
+                font-size: 10px;
+            }
+
+            .prose p {
+                line-height: 1.8;
+                margin-bottom: 20px;
+                text-indent: 1.2em;
+            }
+
+            .chapter-section {
+                padding: 40px 0 60px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- READING PROGRESS BAR -->
+    <div id="progress-bar"></div>
+
+    <!-- FLASH OVERLAY FOR CINEMATIC TRANSITION -->
+    <div class="flash-overlay" id="flashOverlay"></div>
+
+    <!-- FULLSCREEN ANIMATED STAGE FOR FRAGMENT -->
+    <div class="fragment-stage-container" id="stageContainer">
+        <div class="fragment-animated-symbol" id="animSymbol">♦</div>
+    </div>
+
+    <!-- CINEMATIC LANDING SCREEN -->
+    <section id="intro-screen">
+        <img src="logo.png" alt="Beyond The Fragment Logo" class="intro-logo">
+        <h1 class="intro-title">Beyond The Fragment</h1>
+        <div class="intro-subtitle">A Digital Novel</div>
+        <div class="intro-symbol">♦</div>
+        <button id="enterBtn" class="enter-btn">Enter The Story</button>
+    </section>
+
+    <!-- MAIN NOVEL INTERFACE -->
+    <div id="app-content">
+        
+        <!-- STICKY NAVIGATION HEADER -->
+        <header class="nav-header">
+            <a href="#intro-screen" class="nav-brand">
+                <img src="logo.png" alt="Logo" class="nav-logo">
+                <span>Beyond The Fragment</span>
+            </a>
+            <nav class="chapter-nav">
+                <a href="#chapter1" class="nav-link" id="link-ch1">I</a>
+                <a href="#chapter2" class="nav-link" id="link-ch2">II</a>
+                <a href="#chapter3" class="nav-link" id="link-ch3">III</a>
+                <a href="#chapter4" class="nav-link" id="link-ch4">IV</a>
+                <a href="#chapter5" class="nav-link" id="link-ch5">V</a>
+            </nav>
+        </header>
+
+        <div class="wrapper">
+
+            <!-- LORE PROLOGUE SECTION -->
+            <section id="lore-prologue" class="lore-section scroll-reveal">
+                <div class="lore-card">
+                    <div class="symbol-divider">♦</div>
+                    <h2 class="lore-title">The Foundation</h2>
+                    
+                    <p class="lore-text">
+                        A Fragment is merely a piece—a shattered echo of something infinitely vast. It carries memory, resonance, and the weight of what once was whole, but it is not the Core itself. 
+                    </p>
+
+                    <blockquote class="lore-quote">
+                        "The Core does not grant power; it mirrors existence. It shapes itself to the soul, choices, and truths of the one who bears it."
+                    </blockquote>
+
+                    <p class="lore-text">
+                        From the inner foundation arise Flames—radiant alignments forged through Vision, Discipline, Loyalty, Ambition, Resilience, Hope, Awareness, Patience, Courage, and Unity. Yet, bound to every light is a Shadow Flame: Blindness, Indiscipline, Betrayal, Arrogance, Despair, Hopelessness, Unawareness, Impatience, Cowardice, and Division.
+                    </p>
+
+                    <p class="lore-text">
+                        For Darren Akito, the unseen boy standing in the quiet dark, the journey begins not with mastery, but with a single cold shard buried beneath the floorboards.
+                    </p>
+                </div>
+            </section>
+
+            <!-- STORY NOVEL PROSE CONTAINER -->
+            <main class="story-container">
+
+                <!-- CHAPTER I -->
+                <section id="chapter1" class="chapter-section scroll-reveal">
+                    <header class="chapter-header">
+                        <div class="chapter-number">Chapter I</div>
+                        <h1 class="chapter-title">The Unseen Boy</h1>
+                    </header>
+
+                    <article class="prose">
+                        <p class="no-indent">
+                            The bell rang with a dull, metallic vibration that seemed to die before reaching the back of the classroom. Around Darren Akito, chairs scraped against worn linoleum, canvas backpacks swung over shoulders, and voices collided in a familiar hum of afternoon chatter. 
+                        </p>
+                        <p>
+                            Darren sat still, slowly gathering his books into his bag. He was not rushing. There was no one waiting for him in the hallways, no group waving from the doorway, no conversation hanging in the balance. In a school of seven hundred students, Darren existed like a whisper spoken in a crowded room—present, yet unheard.
+                        </p>
+                        <p>
+                            He walked out into the corridor, keeping his shoulders low and his stride steady. He had learned early that survival in high school was not about fighting back; it was about minimizing one’s footprint. If you moved quietly enough, the world simply flowed past you.
+                        </p>
+                        <p>
+                            "Hey. Ghost."
+                        </p>
+                        <p>
+                            The voice cut through the background noise with deliberate weight. Darren didn't need to turn around to know who it belonged to. Damian Charles Whitmore stood near the bank of lockers, flanked by two classmates who chuckled on cue. Damian was tall, broad-shouldered, and carried the effortless arrogance of someone who had never been made to feel small.
+                        </p>
+                        <p>
+                            Darren stopped. "Damian."
+                        </p>
+                        <p>
+                            Damian stepped forward, bumping his shoulder against Darren's with enough force to knock a notebook from his hands. It hit the floor with a soft slap. Neither of Damian's friends picked it up; Damian simply rested a foot on the corner of the cover.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Didn't see you there, Akito,"</span> Damian said, his smile devoid of warmth. <span class="dialogue">"Then again, nobody ever does. You ought to wear a bell around your neck so people don't trip over you."</span>
+                        </p>
+                        <p>
+                            Darren looked down at Damian’s shoe pressing into his notebook. A quiet, familiar tightness pressed against his chest—not anger, exactly, but a hollow, heavy exhaustion. He wanted to speak, to demand his book back, but the words felt like lead in his throat. He had played this part too many times.
+                        </p>
+                        <p>
+                            <span class="dialogue">"I'll just get my stuff,"</span> Darren said quietly, bending down as Damian casually removed his foot and walked away with a brief, dismissive laugh.
+                        </p>
+                        <p>
+                            Darren retrieved the scuffed notebook, wiped the dust off the cover, and continued walking toward the exit. The afternoon sun was pale, casting long, thin shadows across the pavement as he walked the three miles back to his house.
+                        </p>
+                        <p>
+                            Home was quiet. His parents worked late shifts, leaving the small two-story house wrapped in an empty silence that Darren usually welcomed. He headed upstairs to his bedroom, dropped his bag onto the chair, and sat on the edge of his bed.
+                        </p>
+                        <p>
+                            The room was dimly lit by the twilight filtering through the window. As he reached down to unlace his sneakers, his eye caught something unusual near the baseboard beside his desk. 
+                        </p>
+                        <p>
+                            One of the dark wooden floorboards was slightly elevated, standing a few millimeters higher than the rest. Darren frowned. He lived in this room for eight years and knew every squeak and imperfection. That floorboard had always been flush.
+                        </p>
+                        <p>
+                            Kneeling down, he wedged his fingers under the raised edge. With a firm pull, the loose strip of wood lifted away with a dry creak.
+                        </p>
+                        <p>
+                            Beneath it lay a narrow hollow. And inside that hollow sat a dense, matte-black object, roughly the size of a river stone, wrapped in a strange, obsidian container.
+                        </p>
+                        <p>
+                            Darren reached in and lifted it out. It was shockingly cold—colder than the surrounding air. As his fingers gripped the metallic casing, a faint seam along its center split open with a soft hiss, revealing what lay resting inside.
+                        </p>
+                        <p>
+                            It was a sharp, jagged shard. A Fragment.
+                        </p>
+                        <p>
+                            The stone was pitch black, yet deep within its core, a tiny, distinct white pulse rhythmically expanded and contracted. Etched onto its surface was a single, perfect geometry:
+                        </p>
+
+                        <div class="special-effect-block">♦</div>
+
+                        <p>
+                            Darren stared at it, his heart suddenly hammering against his ribs. It wasn't a toy. It wasn't anything manufactured in a factory. It felt... alive.
+                        </p>
+                        <p>
+                            Instinct warned him to put it back, to close the floorboard and pretend he had never seen it. But his fingers moved on their own, brushing against the smooth, crystalline surface of the shard.
+                        </p>
+                        <p>
+                            The moment his skin touched the Fragment, the world snapped.
+                        </p>
+                        <p>
+                            The ambient colors of his bedroom stripped away instantly, plunging every object into a stark, high-contrast monochrome. The sound of distant traffic died. A tremendous, silent surge of energy rushed up Darren's arm, locking his muscles and draining the breath from his lungs.
+                        </p>
+                        <p>
+                            In the absolute stillness of the monochrome room, a low, resonant whisper echoed directly inside his mind—ancient, heavy, and undeniably clear:
+                        </p>
+                        <p class="no-indent dialogue" style="text-align: center; margin: 30px 0; font-size: 1.1em; letter-spacing: 2px;">
+                            <em>"Akhirnya..."</em>
+                        </p>
+                        <p>
+                            Before Darren could scream, dark shadows folded over his vision, and he collapsed onto the wooden floor.
+                        </p>
+                    </article>
+                </section>
+
+                <!-- CHAPTER II -->
+                <section id="chapter2" class="chapter-section scroll-reveal">
+                    <header class="chapter-header">
+                        <div class="chapter-number">Chapter II</div>
+                        <h1 class="chapter-title">The Awakening</h1>
+                    </header>
+
+                    <article class="prose">
+                        <p class="no-indent">
+                            Darren woke with a sudden, sharp intake of air.
+                        </p>
+                        <p>
+                            He was lying on his side on the bedroom floor. Morning light streamed through the window blinds, slicing across his desk in warm gold bars. He pushed himself up quickly, his hands checking his arms, his chest, his head. There was no blood. No pain. 
+                        </p>
+                        <p>
+                            The floorboard beside his desk was closed tightly. The dark container and the Fragment were gone, as if they had never existed at all.
+                        </p>
+                        <p>
+                            <span class="dialogue">"A dream?"</span> he whispered aloud.
+                        </p>
+                        <p>
+                            He stood up—and immediately stumbled, catching himself on his desk chair. His body felt strangely light, almost weightless. When he took a breath, his lungs filled completely, smoothly, with a strange clarity he had never felt before. 
+                        </p>
+                        <p>
+                            He looked toward the window. Outside, a bird landed on a branch thirty feet away. Darren didn't just see the bird; he saw the individual barbules of its gray feathers, the microscopic twitch of its head, the tiny water droplet clinging to its beak. He could hear the distinct, rhythmic rustle of leaves three houses down.
+                        </p>
+                        <p>
+                            His senses had expanded. The world had not grown louder or brighter—it had grown sharper.
+                        </p>
+                        <p>
+                            Feeling a strange mixture of anxiety and quiet fascination, Darren dressed for school. He moved down the stairs with effortless balance, every step precise and silent.
+                        </p>
+                        <p>
+                            When he reached the school grounds, everything appeared ordinary on the surface. Students stood in clusters near the main steps, laughing, looking at phones, complain about homework. Yet as Darren walked through the crowd, he noticed subtle details that usually escaped him: the subtle shifts in posture, the slight hesitation before someone spoke, the exact trajectory of a football flying across the courtyard.
+                        </p>
+                        <p>
+                            He reached his locker and opened it.
+                        </p>
+                        <p>
+                            A hand slammed against the metal door right beside his ear, forcing it shut with a loud crash.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Still alive, ghost?"</span>
+                        </p>
+                        <p>
+                            Damian Charles Whitmore stood there, leaning in close with a smirk. His breath smelled faintly of mint and coffee. <span class="dialogue">"You didn't hand in the lab report yesterday. Coach said I'm missing a grade because of you."</span>
+                        </p>
+                        <p>
+                            Normally, Darren would drop his eyes, apologize, and offer to fix it immediately. But as he looked at Damian, something inside him remained utterly still. The familiar knot of anxiety in his stomach was gone, replaced by a quiet, steady calm.
+                        </p>
+                        <p>
+                            <span class="dialogue">"The lab report was individual, Damian,"</span> Darren said, his voice flat and surprisingly even. <span class="dialogue">"You just didn't do yours."</span>
+                        </p>
+                        <p>
+                            Damian's smirk vanished, replaced by a flash of genuine anger. He wasn't accustomed to Darren speaking back, let alone in front of the dozen students watching in the hallway.
+                        </p>
+                        <p>
+                            <span class="dialogue">"What did you just say?"</span> Damian growled, pulling his right hand back into a fist and stepping forward to shove Darren hard against the lockers.
+                        </p>
+                        <p>
+                            What happened next lasted less than a second.
+                        </p>
+                        <p>
+                            To everyone else in the hallway, Damian threw a heavy, telegraphed shove toward Darren's chest. But to Darren, Damian's movement appeared strangely slow—like watching a heavy object drag through thick water. He saw the shift in Damian's shoulder, the weight transferring to his front foot, the exact angle of his arm.
+                        </p>
+                        <p>
+                            Darren didn't think. Without conscious effort, his body shifted sideways by three inches. 
+                        </p>
+                        <p>
+                            Damian's hand struck empty air, his momentum pulling him forward into the lockers with a heavy metallic clatter. He stumbled, barely catching his balance against the trash bin.
+                        </p>
+                        <p>
+                            The hallway fell dead silent.
+                        </p>
+                        <p>
+                            Damian spun around, his face flushed red with humiliation. <span class="dialogue">"You dirty little—"</span>
+                        </p>
+                        <p>
+                            <span class="dialogue">"That's enough!"</span> Mr. Harrison, the history teacher, stepped out of his classroom, stern eyes sweeping over both boys. <span class="dialogue">"Whitmore, get to homeroom. Akito, you too."</span>
+                        </p>
+                        <p>
+                            Damian glared at Darren, breathing heavily, before turning on his heel and walking away.
+                        </p>
+                        <p>
+                            Darren looked down at his own hands. They weren't shaking. His heart rate was steady. He turned and caught sight of a figure standing at the far end of the corridor near the stairwell.
+                        </p>
+                        <p>
+                            A tall young man with sharp, dark features and silver-accented dark clothing was watching him silently. He wasn't wearing a school uniform. His eyes held an ancient, unyielding weight. 
+                        </p>
+                        <p>
+                            When Darren blinked, the figure was gone.
+                        </p>
+                    </article>
+                </section>
+
+                <!-- CHAPTER III -->
+                <section id="chapter3" class="chapter-section scroll-reveal">
+                    <header class="chapter-header">
+                        <div class="chapter-number">Chapter III</div>
+                        <h1 class="chapter-title">The Voice Beyond Darkness</h1>
+                    </header>
+
+                    <article class="prose">
+                        <p class="no-indent">
+                            Night fell hard over the city. 
+                        </p>
+                        <p>
+                            Darren lay on his back in bed, staring up at the dark ceiling. Sleep refused to come. Every time he closed his eyes, his mind replayed the events of the day: the sharpness of his senses, the effortless dodge in the hallway, and the mysterious figure standing by the stairwell.
+                        </p>
+
+                        <p>
+                            He kept remembering the black container... the cold obsidian shard... the pulsing white symbol... and that voice.
+                        </p>
+                        <p>
+                            <em>"Akhirnya..."</em>
+                        </p>
+                        <p>
+                            As the clock on his desk ticked past midnight, the ambient sounds of the night—the distant hum of refrigerator coils, the wind against the glass—began to fade away. The room grew unnaturally dark, the shadows stretching and thickening until the walls seemed to dissolve entirely.
+                        </p>
+                        <p>
+                            Darren didn't feel himself fall asleep. Yet suddenly, he was no longer lying in bed.
+                        </p>
+                        <p>
+                            He was standing on a vast, seamless floor of pitch-black mirror. Above him, there was no sky, no stars, no ceiling—only an infinite, empty void. The silence here was absolute, so deep it felt heavy against his skin.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Where... am I?"</span> Darren whispered. His voice made no echo.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Inside the threshold,"</span> a calm, quiet voice answered from behind him.
+                        </p>
+                        <p>
+                            Darren spun around. Standing ten feet away was the man from the hallway stairwell. Up close, he radiated an unmistakable aura of authority and profound weariness. His hair fell in dark strands around a pale, defined face, and his eyes burned with a faint, inner luminescence.
+                        </p>
+
+                        <p>
+                            <span class="dialogue">"Who are you?"</span> Darren demanded, taking a defensive step back.
+                        </p>
+                        <p>
+                            <span class="dialogue">"I am Kael Vireon,"</span> the man replied softly. His posture was relaxed, yet every inch of him suggested dangerous precision. He observed Darren with a mix of curiosity and grim recognition.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 30px 0; font-size: 1.05em; letter-spacing: 2px;">
+                            <em>"Jadi kau adalah penerusnya."</em>
+                        </p>
+
+                        <p>
+                            The words hung in the empty void like heavy stone.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Successor?"</span> Darren asked, his voice trembling slightly. <span class="dialogue">"Successor to what? What was that thing under my floor? What did it do to me?"</span>
+                        </p>
+                        <p>
+                            Kael did not answer right away. He took a single, slow step forward, his eyes searching Darren's face. 
+                        </p>
+                        <p>
+                            <span class="dialogue">"You have lived your life unseen, Darren Akito,"</span> Kael said quietly. <span class="dialogue">"You believed that being overlooked was a curse. But the void does not choose those who are full of noise. It chooses those who have learned to exist in quiet."</span>
+                        </p>
+                        <p>
+                            <span class="dialogue">"I don't want any part of this,"</span> Darren said, though even to himself, the denial sounded weak.
+                        </p>
+                        <p>
+                            Kael stopped. His eyes narrowed slightly, looking deeper into Darren than anyone ever had before.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 30px 0; font-size: 1.1em; letter-spacing: 2px;">
+                            <em>"Apakah kau ingin tetap lemah?"</em>
+                        </p>
+
+                        <p>
+                            The question was not delivered as an insult. It was a mirror held up to Darren's soul. It invoked every moment he had been pushed into lockers, every time his name had been forgotten, every afternoon he had walked home feeling like a ghost in his own life.
+                        </p>
+                        <p>
+                            Darren clenched his fists tightly, his nails biting into his palms. The answer came from a place deeper than fear or doubt.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 25px 0; font-size: 1.1em; letter-spacing: 2px;">
+                            <span class="dialogue">"Tidak."</span>
+                        </p>
+
+                        <p>
+                            Kael stared at him for a long moment. A faint, melancholic expression passed over his face.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 30px 0; font-size: 1.05em; letter-spacing: 2px;">
+                            <em>"Semoga kau tidak bernasib sama sepertiku."</em>
+                        </p>
+
+                        <p>
+                            Before Darren could ask what he meant, Kael raised his hand and flicked his fingers.
+                        </p>
+                        <p>
+                            The glass-like floor beneath Darren shattered into ten thousand lightless shards. Darren plummeted into a dark abyss, the wind roaring in his ears as the void swallowed him whole.
+                        </p>
+                        <p>
+                            * * *
+                        </p>
+                        <p class="no-indent">
+                            Darren bolted upright in bed, gasping for air, sweat dripping down his forehead.
+                        </p>
+                        <p>
+                            He instinctively looked at his glowing digital desk clock.
+                        </p>
+                        <p class="no-indent dialogue" style="text-align: center; margin: 25px 0; font-size: 1.3em; letter-spacing: 4px; color: var(--accent-white);">
+                            03:17
+                        </p>
+                        <p>
+                            In the dark room, a subtle white pulse echoed across his chest, centered right over his heart—rhythmic, steady, and unmistakable.
+                        </p>
+                    </article>
+                </section>
+
+                <!-- CHAPTER IV -->
+                <section id="chapter4" class="chapter-section scroll-reveal">
+                    <header class="chapter-header">
+                        <div class="chapter-number">Chapter IV</div>
+                        <h1 class="chapter-title">The Core</h1>
+                    </header>
+
+                    <article class="prose">
+                        <p class="no-indent">
+                            Over the next three days, Darren’s existence transformed in subtle yet profound ways.
+                        </p>
+                        <p>
+                            He was no longer just perceiving the world better; his body was adapting to a new baseline. His balance was absolute. When he ran for the morning bus, his lungs felt as though they possessed endless capacity. During classes, complex mathematical formulas solved themselves in his mind before the teacher finished writing them on the board.
+                        </p>
+                        <p>
+                            Yet, he remained cautious. He did not boast. He did not seek confrontation. He remained Darren Akito—but the ghost was slowly developing substance.
+                        </p>
+                        <p>
+                            On Friday night, as rain beat a steady rhythm against his bedroom window, the true nature of his change revealed itself.
+                        </p>
+                        <p>
+                            Darren sat cross-legged on his floor in the dark. He closed his eyes and focused inward, following the strange, subtle warm current that had been circulating through his veins since the dream with Kael.
+                        </p>
+                        <p>
+                            When he opened his eyes, he looked down at his chest.
+                        </p>
+                        <p>
+                            Beneath his skin, a dark, sphere-like manifestation was slowly coalescing. It was not solid matter, nor was it smoke. It was a concentrated density of presence—a miniature, revolving horizon resting near his sternum.
+                        </p>
+                        <p>
+                            At the absolute center of this dark sphere burned a tiny, piercing point of pure white light.
+                        </p>
+
+                        <div class="special-effect-block">♦</div>
+
+                        <p>
+                            The Fragment he had touched on Monday had not granted him power. The Fragment had merely been a catalyst—a key unlocking something that had lain dormant within his own nature. What was forming now was personal. It was a reflection of his endurance, his silence, his quiet refusal to break.
+                        </p>
+                        <p>
+                            His Core was taking shape.
+                        </p>
+                        <p>
+                            Suddenly, the air in his room grew dense and cold. The quiet hum of his Core faltered as a distant, disembodied whisper echoed clearly in his ears—Kael's voice, speaking across an unknown distance:
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 25px 0; font-size: 1.05em; letter-spacing: 2px;">
+                            <em>"Inti itu mulai terbentuk."</em>
+                        </p>
+
+                        <p>
+                            Darren held his breath. The white light at the center of his chest flared briefly, illuminating his dark room in a pale, ethereal glow.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 25px 0; font-size: 1.05em; letter-spacing: 2px;">
+                            <em>"Bersiaplah..."</em>
+                        </p>
+
+                        <p>
+                            A cold shiver ran down Darren's spine. He felt a sudden, distinct pressure in the atmosphere—a distant, predatory presence turning its attention toward his location, like an eye opening in the dark miles away.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 25px 0; font-size: 1.05em; letter-spacing: 2px;">
+                            <em>"Karena mereka akan datang."</em>
+                        </p>
+
+                        <p>
+                            The voice vanished. The sphere inside his chest settled back into a low, steady thrum.
+                        </p>
+                        <p>
+                            Darren stood up slowly, looking out into the rain-slicked street below. He did not know who "they" were. He did not know what kind of world he had stepped into. But as he looked at his reflection in the dark glass, he knew one thing for certain:
+                        </p>
+                        <p>
+                            He could never go back to being unseen.
+                        </p>
+                    </article>
+                </section>
+
+                <!-- CHAPTER V -->
+                <section id="chapter5" class="chapter-section scroll-reveal">
+                    <header class="chapter-header">
+                        <div class="chapter-number">Chapter V</div>
+                        <h1 class="chapter-title">The First Pursuit</h1>
+                    </header>
+
+                    <article class="prose">
+                        <p class="no-indent">
+                            Saturday dusk fell over the city in muted shades of bruised violet and slate gray.
+                        </p>
+                        <p>
+                            Darren was walking home along the quiet residential bypass near the old rail yards. The streetlights were just flickering to life, humming softly in the damp evening air. It was a route he had taken a hundred times, but tonight, every hair on his neck stood on end.
+                        </p>
+                        <p>
+                            The air felt heavy, charged with static electricity.
+                        </p>
+                        <p>
+                            He turned a corner into a narrow alleyway connecting two main avenues. Halfway through, he stopped.
+                        </p>
+                        <p>
+                            Standing at the exit of the alley was Damian Charles Whitmore. But something was terribly wrong. Damian was not wearing his usual school jacket; his arms hung loosely at his sides, his head tilted at an unnatural, rigid angle. Behind him stood four other figures—shadowy, indistinct shapes whose faces seemed smudged and blurred beneath the streetlights.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Damian?"</span> Darren called out cautiously.
+                        </p>
+                        <p>
+                            Damian didn't answer with words. A low, unnatural rasp escaped his throat. He stepped forward, his movements jerky and synchronized with the figures behind him.
+                        </p>
+                        <p>
+                            Darren turned to head back the way he came, but three more figures stepped into the mouth of the alley behind him, blocking his escape.
+                        </p>
+                        <p>
+                            They weren't just bullies. They were being moved. Manipulated.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Run,"</span> Darren's instincts screamed.
+                        </p>
+                        <p>
+                            He surged forward, springing off the brick wall to his left. His enhanced reflexes kicked in instantly—the world slowed down to a crawl. He saw the reaching hands of the pursuers moving like sluggish pendulum weights. Darren slipped under a swinging grip, planted his foot on a dumpster, and leaped over the lead pursuer, hitting the pavement in a fluid sprint.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Get him!"</span> a distorted voice echoed through the narrow street.
+                        </p>
+                        <p>
+                            Darren sprinted into the dark industrial lot behind the old rail yard. Footsteps thundered behind him—faster than any ordinary human should be able to run. He ducked between rusted shipping containers, his heart pounding a frantic rhythm against his ribs.
+                        </p>
+                        <p>
+                            He wasn't invincible. He was tired, his legs burning from the sheer velocity of his movement. He tripped over a disused train coupling, tumbling hard onto the gravel.
+                        </p>
+                        <p>
+                            Before he could recover, the pursuers surrounded him in a tight circle, closing off every exit. Damian stepped to the front, his eyes completely dark, void of iris or pupil.
+                        </p>
+                        <p>
+                            <span class="dialogue">"Found you..."</span> the hollow voice rasped from Damian's mouth.
+                        </p>
+                        <p>
+                            Cornered, trapped against cold iron, a sudden, blinding spike of pressure erupted from Darren's chest. The Core inside him reacted to his desperate fear and determination.
+                        </p>
+                        <p>
+                            <em>BOOM.</em>
+                        </p>
+                        <p>
+                            A silent wave of pure kinetic energy exploded outward from Darren's body. The air rippled like water. The surrounding figures were thrown backward into the air, crashing hard against the gravel yards ten feet away.
+                        </p>
+                        <p>
+                            Darren fell to his knees, gasping for air, his chest glowing with a fierce white light beneath his shirt.
+                        </p>
+                        <p>
+                            Above him, the evening sky began to warp. 
+                        </p>
+                        <p>
+                            Fine, spiderweb-like fractures of pale light cracked across the clouds, as if the atmosphere itself were made of thin, fragile glass. Reality strained against an immense, invisible force.
+                        </p>
+                        <p>
+                            A tall figure stepped out from the tear in the air, stepping casually onto the gravel.
+                        </p>
+                        <p>
+                            Kael Vireon had arrived.
+                        </p>
+                        <p>
+                            His face was deadly serious, his dark longcoat fluttering in a wind that didn't exist. He looked down at Darren, then turned his gaze toward the dark horizon beyond the rail yard.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 30px 0; font-size: 1.1em; letter-spacing: 2px;">
+                            <em>"Waktumu sudah habis."</em>
+                        </p>
+
+                        <p>
+                            Darren pushed himself up onto his feet, trembling. <span class="dialogue">"What are these things, Kael?"</span>
+                        </p>
+
+                        <p>
+                            Kael didn't look back. His voice was grim, laced with an ancient, terrifying solemnity:
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 25px 0; font-size: 1.1em; letter-spacing: 2px;">
+                            <em>"Mereka telah menemukanmu."</em>
+                        </p>
+
+                        <p>
+                            In the distance, beyond the cracking sky, three immense, shadowy silhouettes rose above the city skyline—beings of cold, silent malice, looking down at the tiny spark of light glowing in Darren Akito's chest.
+                        </p>
+
+                        <p class="no-indent dialogue" style="text-align: center; margin: 30px 0; font-size: 1.1em; letter-spacing: 2px;">
+                            <em>"Musuh yang bahkan aku gagal kalahkan."</em>
+                        </p>
+
+                        <div class="special-effect-block">♦</div>
+                    </article>
+                </section>
+
+            </main>
+
+            <!-- BACK TO TOP BUTTON -->
+            <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+            <!-- FOOTER -->
+            <footer class="site-footer scroll-reveal">
+                <img src="logo.png" alt="Logo" class="footer-logo">
+                <div class="footer-title">Beyond The Fragment</div>
+                <div class="footer-links">
+                    <a href="https://discord.gg/r4dM4QFteV" target="_blank" rel="noopener">Discord</a>
+                    <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank" rel="noopener">WhatsApp</a>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR LOGIC, ANIMATIONS & INTERACTION -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const enterBtn = document.getElementById('enterBtn');
+            const introScreen = document.getElementById('intro-screen');
+            const appContent = document.getElementById('app-content');
+            const animSymbol = document.getElementById('animSymbol');
+            const flashOverlay = document.getElementById('flashOverlay');
+            const progressBar = document.getElementById('progress-bar');
+            const backToTop = document.getElementById('backToTop');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const chapterSections = document.querySelectorAll('.chapter-section');
+
+            let isTransitioning = false;
+
+            /* --------------------------------------------------
+               STEP 1-12: CINEMATIC ENTER TRANSITION & FRAGMENT STAGE
+            -------------------------------------------------- */
+            enterBtn.addEventListener('click', () => {
+                if (isTransitioning) return;
+                isTransitioning = true;
+
+                // Hide Intro Screen
+                introScreen.style.display = 'none';
+
+                // STEP 2: Impact from front to center
+                animSymbol.className = 'fragment-animated-symbol stage-impact';
+
+                // STEP 3: Pulse (~3 seconds)
+                setTimeout(() => {
+                    animSymbol.className = 'fragment-animated-symbol stage-pulse';
+
+                    // STEP 4: Grow & expand
+                    setTimeout(() => {
+                        animSymbol.className = 'fragment-animated-symbol stage-grow';
+
+                        // STEP 5: White Flash peak
+                        setTimeout(() => {
+                            flashOverlay.classList.add('active');
+
+                            // STEP 6: Reveal main novel interface
+                            setTimeout(() => {
+                                animSymbol.className = 'fragment-animated-symbol';
+                                appContent.classList.add('visible');
+
+                                // Fade out flash
+                                flashOverlay.classList.remove('active');
+
+                                // Re-trigger observer for visible content
+                                initScrollObserver();
+
+                                isTransitioning = false;
+                            }, 500);
+
+                        }, 900); // Flash timing near end of grow
+
+                    }, 3000); // 3 seconds heartbeat pulse
+
+                }, 600); // 600ms impact duration
+            });
+
+            /* --------------------------------------------------
+               SCROLL PROGRESS BAR & BACK TO TOP
+            -------------------------------------------------- */
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (totalHeight > 0) {
+                    const progress = (window.scrollY / totalHeight) * 100;
+                    progressBar.style.width = `${progress}%`;
+                }
+
+                if (window.scrollY > 400) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+
+                // Update Active Nav Link
+                let current = '';
+                chapterSections.forEach(section => {
+                    const sectionTop = section.offsetTop - 120;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            /* --------------------------------------------------
+               INTERSECTION OBSERVER FOR SCROLL REVEAL
+            -------------------------------------------------- */
+            let observer;
+            function initScrollObserver() {
+                if (observer) observer.disconnect();
+
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px 0px -40px 0px',
+                    threshold: 0.1
+                };
+
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        } else {
+                            // Natural fade out when scrolling past/back
+                            entry.target.classList.remove('active');
+                        }
+                    });
+                }, observerOptions);
+
+                const revealElements = document.querySelectorAll('.scroll-reveal');
+                revealElements.forEach(el => observer.observe(el));
+            }
+
+            initScrollObserver();
+        });
+    </script>
+</body>
+</html>
